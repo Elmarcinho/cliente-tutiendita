@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "791320512731",
+    "project_id": "admin-tutiendita-f014f",
+    "storage_bucket": "admin-tutiendita-f014f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791320512731:android:380b27739c3165719364fe",
+        "android_client_info": {
+          "package_name": "com.evem.admin_tutiendita"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiGH_w--AzsZOurYrIHkfhTdNDuda9hnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791320512731:android:47192ecd0ae357609364fe",
+        "android_client_info": {
+          "package_name": "com.evem.cliente_tutiendita"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiGH_w--AzsZOurYrIHkfhTdNDuda9hnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
