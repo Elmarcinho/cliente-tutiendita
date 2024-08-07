@@ -99,10 +99,9 @@ class _ProductoInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final productBloc = context.watch<ProductBloc>();
-
     return Column(
             children: [
-              
+          
               Container(
                 color: Colors.black12,
                 height: 120,
@@ -113,7 +112,7 @@ class _ProductoInformation extends StatelessWidget {
 
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: Text(state.product!.title, 
+                      child: Text('${state.product!.title} ${state.product!.description1} ${state.product!.description2}', 
                         style: GoogleFonts.lato(
                         decoration: TextDecoration.none, 
                         fontSize: 20

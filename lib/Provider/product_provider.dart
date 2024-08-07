@@ -9,26 +9,26 @@ class ProductProvider{
   final _firestore = FirebaseFirestore.instance;
 
 
-  Future<List<ProductoModel>> getProductos() async{
+  Future<List<ProductModel>> getProductos() async{
 
     return await _firestore.collection('product')
       .where('state', isEqualTo: true)
       .get()
       .then((value) => value.docs
-      .map((e) => ProductoModel
+      .map((e) => ProductModel
       .fromJson(e.data())).toList());
 
   }
 
 
-  Future<List<ProductoModel>> buscarProducto(String query) async{
+  Future<List<ProductModel>> buscarProducto(String query) async{
     
     if(query.isEmpty) return [];
     
     return await _firestore.collection('product') 
       .where('title', isGreaterThanOrEqualTo: query) 
       .where('title', isLessThanOrEqualTo:'${query}z')  
-      .get().then((value) => value.docs.map((e) => ProductoModel.fromJson(e.data())).toList());
+      .get().then((value) => value.docs.map((e) => ProductModel.fromJson(e.data())).toList());
 
   }
 

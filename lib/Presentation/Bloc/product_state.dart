@@ -5,14 +5,14 @@ class ProductState extends Equatable {
   final bool formStatus;
   final bool isFormValid;
   final bool isEnabled;
-  final ProductoModel? product;
-  final List<ProductoModel> listProduct;
+  final ProductModel? product;
+  final List<ProductModel> listProduct;
   final bool isCreate;
   final String ultimoQuery;
   final List<CategoryModel> listCategory;
   final List<CategoryModel> listCategoryFiltro;
   final List<String> selectCategory;
-  final List<ProductoModel> listRepository;
+  final List<ProductModel> listRepository;
 
   const ProductState({
     this.formStatus = false,
@@ -32,14 +32,14 @@ class ProductState extends Equatable {
     bool? formStatus,
     bool? isFormValid,
     bool? isEnabled,
-    ProductoModel?  product,
-    List<ProductoModel>? listProduct,
+    ProductModel?  product,
+    List<ProductModel>? listProduct,
     bool? isCreate,
     String? ultimoQuery,
     List<CategoryModel>? listCategory,
     List<CategoryModel>? listCategoryFiltro,
     List<String>? selectCategory,
-    List<ProductoModel>? listRepository
+    List<ProductModel>? listRepository
 
   }) => ProductState(
     formStatus: formStatus ?? this.formStatus,

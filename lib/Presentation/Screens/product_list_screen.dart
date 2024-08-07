@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:cliente_tutiendita/Presentation/Widgets/widgets.dart';
@@ -12,6 +14,8 @@ class ProductListSreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final titleStyle = Theme.of(context).textTheme.titleLarge;
     
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
@@ -24,21 +28,21 @@ class ProductListSreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
 
-            CategoryHorizontalListview(category: state.listCategory),
+            CategoryHorizontalListview( title: 'Categorias', titleStyle: titleStyle,),
 
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 10),
-              child: const Text('Productos')
+              child:  Text('Productos', style: titleStyle)
             ),
 
             Expanded(
               child: GridView.builder(
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.66,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5),
+                    crossAxisCount: 3,
+                    childAspectRatio: 0.6,
+                    crossAxisSpacing: 2,
+                ),
                 itemCount: state.listProduct.length,
                 itemBuilder: (contex, i) =>
                     _crearItem(context, state.listProduct[i]),
@@ -51,67 +55,95 @@ class ProductListSreen extends StatelessWidget {
   }
 
 
-  Widget _crearItem(BuildContext context, ProductoModel producto) {
+  Widget _crearItem(BuildContext context, ProductModel producto) {
     
-    return Card(
-      elevation: 0,
-      color: Colors.transparent,
-      child: InkWell(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 140.0,
-                width: double.infinity,
-                child: (producto.image.isEmpty)
-                    ? Image.asset('assets/no-image.jpg')
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: FadeInImage(
-                          placeholder:
-                              const AssetImage('assets/jar-loading.gif'),
-                          height: 100.0,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          image: NetworkImage(producto.image),
-                        )
-                    ),
-              ),
-              
-              const SizedBox(height: 10),
-              Expanded(
-                child: SizedBox(
+    return Stack(
+      children: [
+        Card(
+          elevation: 0,
+          color: Colors.transparent,
+          child: InkWell(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: <Widget>[
+        
+                  SizedBox(
+                    height: 80.0,
+                    width: double.infinity,
+                    child: (producto.image.isEmpty)
+                        ? Image.asset('assets/no-image.jpg')
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: FadeInImage(
+                              placeholder:
+                                  const AssetImage('assets/jar-loading.gif'),
+                              height: 100.0,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              image: NetworkImage(producto.image),
+                            )
+                        ),
+                  ),
+        
+                  const SizedBox(height: 8),
+                  
+                  SizedBox(
                     width: double.infinity,
                     child: Text(
-                        '${producto.title[0].toUpperCase()}${producto.title.substring(1)}',
-                        style: const TextStyle(fontSize: 15))),
+                      'Bs. ${producto.price}',
+                      style: const TextStyle( fontSize: 15, fontWeight: FontWeight.bold)
+                    )
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      '${producto.title[0].toUpperCase()}${producto.title.substring(1)}',
+                      style: const TextStyle(fontSize: 12)
+                    )
+                  ),
+                  SizedBox(
+                    width: double.infinity, 
+                    child: Text(producto.description1,
+                      style: const TextStyle(fontSize: 12)
+                    )
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity, 
+                      child: Text(producto.description2,
+                        style: const TextStyle(fontSize: 12)
+                      )
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
-                  width: double.infinity, child: Text(producto.description)),
-              SizedBox(
-                  width: double.infinity,
-                  child: Text('Bs. ${producto.price}',
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold))),
-              SizedBox(
-                width: double.infinity,
-                child: Text(producto.state ? 'ACTIVO' : 'INACTIVO',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: producto.state ? Colors.green : Colors.red)),
-              ),
-              SizedBox(
-                  width: double.infinity, child: Text(producto.titleCategory))
-            ],
+            ),
+            onTap: () {
+              context.read<ProductBloc>().add(ProductoEvent(producto));
+              Navigator.pushNamed(context, 'product');
+            },
           ),
         ),
-        onTap: () {
-          context.read<ProductBloc>().add(ProductoEvent(producto));
-          Navigator.pushNamed(context, 'product');
-        },
-      ),
+
+        Positioned(
+          right: 7,
+          child: SizedBox(
+            width: 35,
+            height: 35,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide( width: 2, color: Color.fromARGB(255, 74, 224, 79)),
+                backgroundColor: Colors.transparent,
+                shape: const CircleBorder(),
+              padding: const EdgeInsets.all(2),          
+              ),
+              child: const Icon(Icons.add, color: Color.fromARGB(255, 74, 224, 79)),
+              onPressed: (){},
+            ),
+          ),
+        ),
+      ],
     );
     
   }

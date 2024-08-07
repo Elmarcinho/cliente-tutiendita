@@ -16,12 +16,12 @@ class OnUltimoQuery extends ProductEvent{
 }
 
 //*Eventos para obtener data
-class GetProductosEvent extends ProductEvent { 
-  const GetProductosEvent();
+class GetProductsEvent extends ProductEvent { 
+  const GetProductsEvent();
 }
 
 class ProductoEvent extends ProductEvent { 
-  final ProductoModel product;
+  final ProductModel product;
   const ProductoEvent(this.product);
 }
 

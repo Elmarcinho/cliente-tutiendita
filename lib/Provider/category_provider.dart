@@ -12,7 +12,7 @@ class CategoryProvider{
   Future<List<CategoryModel>> getCategorias() async{
 
   return await _firestore.collection('category')
-    .orderBy('title',descending: false)
+    .where('state', isEqualTo: true)
     .get()
     .then((value) => value.docs
     .map((e) => CategoryModel

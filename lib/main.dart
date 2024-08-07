@@ -1,3 +1,4 @@
+import 'package:cliente_tutiendita/Presentation/Bloc/category_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,9 +40,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        //BlocProvider(create: (context) => CategoryBloc(categoryProvider)..add(const GetCatoriasEvent())),
+        BlocProvider(create: (context) => CategoryBloc(categoryProvider)..add(const GetCategorysEvent())),
         BlocProvider(create: (context) => LoginBloc()),
-        BlocProvider(create: (context) => ProductBloc(productProvider, categoryProvider)..add(const GetProductosEvent())),
+        BlocProvider(create: (context) => ProductBloc(productProvider, categoryProvider)..add(const GetProductsEvent())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

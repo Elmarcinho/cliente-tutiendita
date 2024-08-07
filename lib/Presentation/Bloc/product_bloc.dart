@@ -19,13 +19,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   ProductBloc(this.productProvider, this.categoryProvider) : super(const ProductState()) {
 
-    on<GetProductosEvent>( _onGetProductos);
+    on<GetProductsEvent>( _onGetProducts);
     on<ProductoEvent>( _onProducto);
     on<OnUltimoQuery>( _onUltimoQuery);
 
   }
 
-  void _onGetProductos( GetProductosEvent event, Emitter emit) async{
+  void _onGetProducts( GetProductsEvent event, Emitter emit) async{
     
     final productos = await productProvider.getProductos();
 

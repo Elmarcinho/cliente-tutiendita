@@ -1,15 +1,16 @@
 import 'dart:convert';
 
-ProductoModel productoModelFromJson(String str) => ProductoModel.fromJson(json.decode(str));
+ProductModel productoModelFromJson(String str) => ProductModel.fromJson(json.decode(str));
 
-String productoModelToJson(ProductoModel data) => json.encode(data.toJson());
+String productoModelToJson(ProductModel data) => json.encode(data.toJson());
 
 
-class ProductoModel {
+class ProductModel {
     
   String id;
   String title;
-  String description;
+  String description1;
+  String description2;
   double price;
   int stock;
   String image;
@@ -17,10 +18,11 @@ class ProductoModel {
   String idCategory;
   String titleCategory;
 
-  ProductoModel({
+  ProductModel({
       this.id ='',
       this.title ='',
-      this.description ='',
+      this.description1 ='',
+      this.description2 ='',
       this.price = 0.0,
       this.stock = 0,
       this.image = '',
@@ -30,10 +32,11 @@ class ProductoModel {
   });
 
 
-  factory ProductoModel.fromJson(Map<String, dynamic> json) => ProductoModel(
+  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
       id          : json["id"],
       title       : json["title"],
-      description : json["description"],
+      description1 : json["description1"],
+      description2 : json["description2"],
       price       : json["price"].toDouble(),
       stock       : json["stock"].toInt(),
       image       : json["image"],
@@ -45,7 +48,8 @@ class ProductoModel {
   Map<String, dynamic> toJson() => {
       "id"           : id,
       "title"        : title,
-      "description"  : description,
+      "description1"  : description1,
+      "description2"  : description2,
       "price"        : price,
       "stock"        : stock,
       "image"        : image,

@@ -6,14 +6,14 @@ import 'package:cliente_tutiendita/Model/product_model.dart';
 
 
 
-typedef SearchProductCallback = Future<List<ProductoModel>> Function( String query);
+typedef SearchProductCallback = Future<List<ProductModel>> Function( String query);
 
 
-class SearchProductDelegate extends SearchDelegate<ProductoModel?>{
+class SearchProductDelegate extends SearchDelegate<ProductModel?>{
 
   final SearchProductCallback searchProduct;
-  List<ProductoModel> initialProduct;
-  StreamController<List<ProductoModel>> debouncedProductos = StreamController.broadcast();
+  List<ProductModel> initialProduct;
+  StreamController<List<ProductModel>> debouncedProductos = StreamController.broadcast();
   StreamController<bool> isLoadingStream = StreamController.broadcast();
   Timer? _debounceTimer;
 
@@ -133,7 +133,7 @@ class SearchProductDelegate extends SearchDelegate<ProductoModel?>{
 
 class _ProductItem extends StatelessWidget {
 
-  final ProductoModel product;
+  final ProductModel product;
   final Function onProductSelect;
   const _ProductItem({
     required this.product,
@@ -177,7 +177,8 @@ class _ProductItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(product.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text(product.description),
+                  Text(product.description1),
+                  Text(product.description2),
                   Text('Stock: ${product.stock}'),
                   Text(product.state?'ACTIVO':'INACTIVO',
                     style: TextStyle(fontSize:15 ,fontWeight: FontWeight.bold , color: product.state?Colors.green:Colors.red)),

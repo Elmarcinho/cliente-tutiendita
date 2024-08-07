@@ -21,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
+  
   List screens = [
     const SearchProductScreen(),
     const ProductListSreen(),
