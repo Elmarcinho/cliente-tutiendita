@@ -12,7 +12,7 @@ class ProductState extends Equatable {
   final List<CategoryModel> listCategory;
   final List<CategoryModel> listCategoryFiltro;
   final List<String> selectCategory;
-  final List<ProductModel> listRepository;
+  final List<ProductModel> listProductRepository;
 
   const ProductState({
     this.formStatus = false,
@@ -25,7 +25,7 @@ class ProductState extends Equatable {
     this.listCategory = const[],
     this.listCategoryFiltro = const[],
     this.selectCategory = const [],
-    this.listRepository= const []
+    this.listProductRepository= const []
   });
 
   ProductState copyWith({
@@ -39,7 +39,7 @@ class ProductState extends Equatable {
     List<CategoryModel>? listCategory,
     List<CategoryModel>? listCategoryFiltro,
     List<String>? selectCategory,
-    List<ProductModel>? listRepository
+    List<ProductModel>? listProductRepository
 
   }) => ProductState(
     formStatus: formStatus ?? this.formStatus,
@@ -52,13 +52,13 @@ class ProductState extends Equatable {
     listCategory: listCategory ?? this.listCategory,
     listCategoryFiltro: listCategoryFiltro ?? this.listCategoryFiltro,
     selectCategory: selectCategory ?? this.selectCategory,
-    listRepository: listRepository ?? this.listRepository
+    listProductRepository: listProductRepository ?? this.listProductRepository
 
   );
   
   @override
   List<Object?> get props => [formStatus, isFormValid, isEnabled, product, listProduct, isCreate, ultimoQuery, 
-    listCategory,listCategoryFiltro, selectCategory, listRepository];
+    listCategory,listCategoryFiltro, selectCategory, listProductRepository];
 }
 
 

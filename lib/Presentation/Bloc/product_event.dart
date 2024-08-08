@@ -10,6 +10,11 @@ class ProductEvent extends Equatable {
 
 
 //*Eventos Query
+class OnSearchProduct extends ProductEvent{
+  final String query;
+  const OnSearchProduct(this.query);
+}
+
 class OnUltimoQuery extends ProductEvent{
   final String ultimoQuery;
   const OnUltimoQuery(this.ultimoQuery);

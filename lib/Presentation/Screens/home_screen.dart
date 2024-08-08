@@ -1,10 +1,9 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-
 
 import 'package:cliente_tutiendita/Presentation/Screens/screen.dart';
 import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
@@ -22,13 +21,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   
+  int selectIndex = 1;
   List screens = [
     const SearchProductScreen(),
     const ProductListSreen(),
     const ShoopingCartScreen()
   ];
-  int selectIndex = 1;
-
 
   @override
   Widget build(BuildContext context) {
