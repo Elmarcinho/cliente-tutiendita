@@ -13,7 +13,7 @@ class SearchProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final query = TextEditingController();
+    final queryController = TextEditingController();
 
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
@@ -24,32 +24,38 @@ class SearchProductScreen extends StatelessWidget {
               height: 55,
               width: 340,
               child: TextField(
-                controller: query,
+                controller: queryController,
+                textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius:BorderRadius.all(Radius.circular(10.0)),
+                    borderSide: BorderSide(color: Colors.green)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0)
                   ),
-                  hintText: 'Buscar',
+                  hintText: 'Buscar producto',
                   hintStyle: const TextStyle( fontWeight: FontWeight.normal),
                   prefixIcon: IconButton(
                     onPressed: (){
-                      context.read<ProductBloc>().add(OnSearchProduct(query.text.toLowerCase()));
+                      context.read<ProductBloc>().add(OnSearchProduct(state.titleQuery.value.toLowerCase()));
                     }, 
                     icon: const Icon(Icons.search_outlined)
                   ),
                   suffixIcon: FadeIn(
-                    animate: false,
+                    animate: state.titleQuery.value.isNotEmpty,
                     child: IconButton(
                       onPressed: (){
-                        
+                        context.read<ProductBloc>().add(OnResetQuery());
+                        queryController.text = '';
                       }, 
                       icon: const Icon(Icons.clear_outlined)
                     ),
                   ),
                 ),
                 onChanged: (value) {
-                  
+                  context.read<ProductBloc>().add(OnTitleQuery(value));
                 },
+                onSubmitted: ((value) =>  context.read<ProductBloc>().add(OnSearchProduct(value.toLowerCase()))),
               ),
             ),
             Expanded(

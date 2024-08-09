@@ -207,8 +207,8 @@ class _ProductoInformation extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(state.product == null ? '' :  'Bs. ${state.product!.price.toString()}'),
-                        Text('0'),
-                        Text('10')
+                        const Text('0'),
+                        const Text('10')
                       ],
                     ),
                   ],

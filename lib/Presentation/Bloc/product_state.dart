@@ -8,7 +8,7 @@ class ProductState extends Equatable {
   final ProductModel? product;
   final List<ProductModel> listProduct;
   final bool isCreate;
-  final String ultimoQuery;
+  final TitleQuery titleQuery;
   final List<CategoryModel> listCategory;
   final List<CategoryModel> listCategoryFiltro;
   final List<String> selectCategory;
@@ -21,7 +21,7 @@ class ProductState extends Equatable {
     this.product,
     this.listProduct= const [],
     this.isCreate = false,
-    this.ultimoQuery = '',
+    this.titleQuery = const TitleQuery.dirty(''),
     this.listCategory = const[],
     this.listCategoryFiltro = const[],
     this.selectCategory = const [],
@@ -35,7 +35,7 @@ class ProductState extends Equatable {
     ProductModel?  product,
     List<ProductModel>? listProduct,
     bool? isCreate,
-    String? ultimoQuery,
+    TitleQuery? titleQuery,
     List<CategoryModel>? listCategory,
     List<CategoryModel>? listCategoryFiltro,
     List<String>? selectCategory,
@@ -48,7 +48,7 @@ class ProductState extends Equatable {
     product: product ?? this.product,
     listProduct: listProduct ?? this.listProduct,
     isCreate: isCreate ?? this.isCreate,
-    ultimoQuery: ultimoQuery ?? this.ultimoQuery,
+    titleQuery: titleQuery ?? this.titleQuery,
     listCategory: listCategory ?? this.listCategory,
     listCategoryFiltro: listCategoryFiltro ?? this.listCategoryFiltro,
     selectCategory: selectCategory ?? this.selectCategory,
@@ -57,7 +57,7 @@ class ProductState extends Equatable {
   );
   
   @override
-  List<Object?> get props => [formStatus, isFormValid, isEnabled, product, listProduct, isCreate, ultimoQuery, 
+  List<Object?> get props => [formStatus, isFormValid, isEnabled, product, listProduct, isCreate, titleQuery, 
     listCategory,listCategoryFiltro, selectCategory, listProductRepository];
 }
 

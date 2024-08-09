@@ -6,19 +6,6 @@ class ProductEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
-//*Eventos buttom
-
-
-//*Eventos Query
-class OnSearchProduct extends ProductEvent{
-  final String query;
-  const OnSearchProduct(this.query);
-}
-
-class OnUltimoQuery extends ProductEvent{
-  final String ultimoQuery;
-  const OnUltimoQuery(this.ultimoQuery);
-}
 
 //*Eventos para obtener data
 class GetProductsEvent extends ProductEvent { 
@@ -30,4 +17,23 @@ class ProductoEvent extends ProductEvent {
   const ProductoEvent(this.product);
 }
 
+class OnSearchProduct extends ProductEvent{
+  final String query;
+  const OnSearchProduct(this.query);
+}
+
 //*Eventos del formulario Producto
+class OnTitleQuery extends ProductEvent{
+  final String titleQuery;
+  const OnTitleQuery(this.titleQuery);
+}
+
+//*Evento
+
+class OnUltimoQuery extends ProductEvent{
+  final String ultimoQuery;
+  const OnUltimoQuery(this.ultimoQuery);
+}
+
+class OnResetQuery extends ProductEvent{ }
+

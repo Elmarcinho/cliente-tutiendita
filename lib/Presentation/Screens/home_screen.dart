@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   
   int selectIndex = 1;
+  String title = '';
   List screens = [
     const SearchProductScreen(),
     const ProductListSreen(),
@@ -39,6 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
         return Scaffold(
           drawer: const SideMenu(),
           appBar: AppBar(
+            title: Text(title),
+            centerTitle: true,
             actions: [
               IconButton(
                 icon: const Icon(FontAwesomeIcons.whatsapp, color: Colors.green, size: 40,),
@@ -68,7 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   
                 ),
             ],
-            onTap: (index)=> setState(() { selectIndex = index ; }),
+            onTap: (index)=> setState(() { 
+              selectIndex = index ; 
+              index == 0? title = 'Búsqueda' : title = '';
+            }),
           ),
           body: screens[ selectIndex ],
         );

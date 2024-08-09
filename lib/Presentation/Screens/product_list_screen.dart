@@ -33,6 +33,8 @@ class ProductListSreen extends StatelessWidget {
               child:  Text('Productos', style: titleStyle)
             ),
 
+            const SizedBox( height: 12),
+
             Expanded(
               child: GridView.builder(
                 shrinkWrap: true,

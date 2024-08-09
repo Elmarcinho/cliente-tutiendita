@@ -1,6 +1,8 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
 
+import 'package:cliente_tutiendita/Negocio/validation/validation.dart';
 import 'package:cliente_tutiendita/Model/product_model.dart';
 import 'package:cliente_tutiendita/Model/category_model.dart';
 import 'package:cliente_tutiendita/Provider/category_provider.dart';
@@ -22,6 +24,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<GetProductsEvent>( _onGetProducts);
     on<ProductoEvent>( _onProducto);
     on<OnSearchProduct>( _onSearchProduct);
+    on<OnTitleQuery>( _onTitleQuery);
+    on<OnResetQuery>( _onResetQuery);
     on<OnUltimoQuery>( _onUltimoQuery);
 
   }
@@ -59,15 +63,35 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
   }
 
+  void _onTitleQuery( OnTitleQuery event, Emitter emit) async{
+
+    final titleQuery = TitleQuery.dirty(event.titleQuery);
+    
+    emit( 
+      state.copyWith(
+        titleQuery: titleQuery,
+        isFormValid: Formz.validate([titleQuery])
+      )
+    );
+
+  }
 
   void _onUltimoQuery( OnUltimoQuery event, Emitter emit) async{
     
     emit( 
       state.copyWith(
-        ultimoQuery: event.ultimoQuery
+        titleQuery: TitleQuery.dirty(event.ultimoQuery)
       )
     );
 
+  }
+
+  void _onResetQuery ( OnResetQuery event, Emitter emit) async{
+    emit(
+      state.copyWith(
+        titleQuery: const TitleQuery.dirty('')
+      )
+    );
   }
 
 }
