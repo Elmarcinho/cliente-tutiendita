@@ -53,7 +53,6 @@ class ProductState extends Equatable {
     listCategoryFiltro: listCategoryFiltro ?? this.listCategoryFiltro,
     selectCategory: selectCategory ?? this.selectCategory,
     listProductRepository: listProductRepository ?? this.listProductRepository
-
   );
   
   @override

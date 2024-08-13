@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
             onTap: (index)=> setState(() { 
               selectIndex = index ; 
-              index == 0? title = 'Búsqueda' : title = '';
+              index == 0? title = 'Búsqueda' : (index ==2 ? title= 'Mi carrito' : title = '');
             }),
           ),
           body: screens[ selectIndex ],

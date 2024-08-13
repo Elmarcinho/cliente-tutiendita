@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:cliente_tutiendita/Presentation/Bloc/shooping_cart_bloc.dart';
 import 'package:cliente_tutiendita/Presentation/Widgets/widgets.dart';
 import 'package:cliente_tutiendita/Model/product_model.dart';
 import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
@@ -139,7 +140,9 @@ class ProductListSreen extends StatelessWidget {
               padding: const EdgeInsets.all(2),          
               ),
               child: const Icon(Icons.add, color: Color.fromARGB(255, 74, 224, 79)),
-              onPressed: (){},
+              onPressed: (){
+                context.read<ShoopingCartBloc>().add(AddProductEvent(producto));
+              },
             ),
           ),
         ),

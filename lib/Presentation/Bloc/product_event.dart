@@ -8,11 +8,11 @@ class ProductEvent extends Equatable {
 }
 
 //*Eventos para obtener data
-class GetProductsEvent extends ProductEvent { 
+class GetProductsEvent extends ProductEvent{ 
   const GetProductsEvent();
 }
 
-class ProductoEvent extends ProductEvent { 
+class ProductoEvent extends ProductEvent{ 
   final ProductModel product;
   const ProductoEvent(this.product);
 }
