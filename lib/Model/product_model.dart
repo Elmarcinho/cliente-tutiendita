@@ -19,42 +19,42 @@ class ProductModel {
   String titleCategory;
 
   ProductModel({
-      this.id ='',
-      this.title ='',
-      this.description1 ='',
-      this.description2 ='',
-      this.price = 0.0,
-      this.stock = 0,
-      this.image = '',
-      this.state = false,
-      this.idCategory = '',
-      this.titleCategory = ''
+    this.id ='',
+    this.title ='',
+    this.description1 ='',
+    this.description2 ='',
+    this.price = 0.0,
+    this.stock = 0,
+    this.image = '',
+    this.state = false,
+    this.idCategory = '',
+    this.titleCategory = '',
   });
 
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-      id          : json["id"],
-      title       : json["title"],
-      description1 : json["description1"],
-      description2 : json["description2"],
-      price       : json["price"].toDouble(),
-      stock       : json["stock"].toInt(),
-      image       : json["image"],
-      state       : json["state"],
-      idCategory  : json["idCategory"],
-      titleCategory: json["titleCategory"]
+    id          : json["id"],
+    title       : json["title"],
+    description1 : json["description1"],
+    description2 : json["description2"],
+    price       : json["price"].toDouble(),
+    stock       : json["stock"].toInt(),
+    image       : json["image"],
+    state       : json["state"],
+    idCategory  : json["idCategory"],
+    titleCategory: json["titleCategory"],
   );
 
   Map<String, dynamic> toJson() => {
-      "id"           : id,
-      "title"        : title,
-      "description1"  : description1,
-      "description2"  : description2,
-      "price"        : price,
-      "stock"        : stock,
-      "image"        : image,
-      "state"        : state,
-      "idCategory"   : idCategory,
-      "titleCategory": titleCategory
+    "id"           : id,
+    "title"        : title,
+    "description1" : description1,
+    "description2" : description2,
+    "price"        : price,
+    "stock"        : stock,
+    "image"        : image,
+    "state"        : state,
+    "idCategory"   : idCategory,
+    "titleCategory": titleCategory,
   };
 }

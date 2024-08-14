@@ -141,8 +141,54 @@ class ProductListSreen extends StatelessWidget {
               ),
               child: const Icon(Icons.add, color: Color.fromARGB(255, 74, 224, 79)),
               onPressed: (){
-                context.read<ShoopingCartBloc>().add(AddProductEvent(producto));
+                context.read<ShoopingCartBloc>().add(AddProductEvent(producto, 1, true));
+             
               },
+            ),
+          ),
+        ),
+
+        Visibility(
+          visible: true,
+          child: Positioned(
+            right: 7,
+            child: Container(
+              height: 38,
+              width: 108,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all( color: const Color.fromARGB(255, 74, 224, 79)),
+                borderRadius: BorderRadius.circular(5)
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: -6,
+                    right: -5,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.remove_circle_outline, size: 30),
+                          color: const Color.fromARGB(255, 74, 224, 79), 
+                        onPressed: (){}
+                        ),
+                        const SizedBox(
+                          width: 20,
+                          child: Text( '20', 
+                            style: TextStyle(fontSize: 15.0)
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.add_circle_outline, size: 30),
+                          color: const Color.fromARGB(255, 74, 224, 79), 
+                        onPressed: (){}
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),  
             ),
           ),
         ),
@@ -150,4 +196,6 @@ class ProductListSreen extends StatelessWidget {
     );
     
   }
+
+
 }

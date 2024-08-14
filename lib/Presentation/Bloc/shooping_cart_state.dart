@@ -2,28 +2,29 @@ part of 'shooping_cart_bloc.dart';
 
 class ShoopingCartState extends Equatable {
 
-  final int cantidad;
+  final int quantity;
   final double total;
-  final List<ProductModel> listProduct;
+  final List<DetailOrderModel> listDetailOrder;
   
   const ShoopingCartState({
 
-    this.cantidad = 0,
+    this.quantity = 0,
     this.total = 0.0,
-    this.listProduct= const [],
+    this.listDetailOrder= const [],
   });
 
   ShoopingCartState copyWith({
-    int? cantidad,
+    int? quantity,
     double? total,
-    List<ProductModel>? listProduct
+    List<DetailOrderModel>? listDetailOrder,
+    bool? visible
 
   }) => ShoopingCartState(
-    cantidad: cantidad ?? this.cantidad,
+    quantity: quantity ?? this.quantity,
     total: total ?? this.total,
-    listProduct: listProduct ?? this.listProduct
+    listDetailOrder: listDetailOrder ?? this.listDetailOrder,
   );
   
   @override
-  List<Object> get props => [ cantidad, total, listProduct ];
+  List<Object> get props => [ quantity, total, listDetailOrder ];
 }
