@@ -22,11 +22,11 @@ class ShoopingCartScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView.separated(
-                itemCount: state.listDetailOrder.length + 1,
+                itemCount: state.listProduct.length + 1,
                 separatorBuilder: (context, index) => const Divider( height: 1),
                 itemBuilder: (context, index) {
                   
-                  return (index < state.listDetailOrder.length)
+                  return (index < state.listProduct.length)
                     ?Container(
                       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       child: Row(
@@ -36,7 +36,7 @@ class ShoopingCartScreen extends StatelessWidget {
                           SizedBox(
                             height: 60,
                             width: 60,
-                            child: (state.listDetailOrder[index].image.isEmpty)
+                            child: (state.listProduct[index].image.isEmpty)
                                 ? Image.asset('assets/no-image.jpg')
                                 : ClipRRect(
                                     borderRadius: BorderRadius.circular(8.0),
@@ -46,7 +46,7 @@ class ShoopingCartScreen extends StatelessWidget {
                                       height: 100.0,
                                       width: double.infinity,
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(state.listDetailOrder[index].image),
+                                      image: NetworkImage(state.listProduct[index].image),
                                     )
                                 ),
                           ),
@@ -55,10 +55,10 @@ class ShoopingCartScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                Text(state.listDetailOrder[index].title, style: const TextStyle(fontSize: 11)),
-                                Text(state.listDetailOrder[index].description1, style: const TextStyle(fontSize: 11)),
-                                Text(state.listDetailOrder[index].description2, style: const TextStyle(fontSize: 11)),
-                                Text('Bs ${state.listDetailOrder[index].price.toString()}', 
+                                Text(state.listProduct[index].title, style: const TextStyle(fontSize: 11)),
+                                Text(state.listProduct[index].description1, style: const TextStyle(fontSize: 11)),
+                                Text(state.listProduct[index].description2, style: const TextStyle(fontSize: 11)),
+                                Text('Bs ${state.listProduct[index].price.toString()}', 
                                   style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic)
                                 ),
                               ],
@@ -68,7 +68,7 @@ class ShoopingCartScreen extends StatelessWidget {
                             height: 25,
                             width: 60,
                             child: TextFormField(
-                              initialValue: state.listDetailOrder[index].quantity.toString(),
+                              initialValue: state.listProduct[index].quantity.toString(),
                               textAlign: TextAlign.center,
                               textAlignVertical: TextAlignVertical.top,
                               style: const TextStyle( fontSize: 16),
@@ -88,7 +88,7 @@ class ShoopingCartScreen extends StatelessWidget {
                             ),
                           ),
                 
-                          Text('Bs ${state.listDetailOrder[index].price.toString()}', style: const TextStyle(fontSize: 11)),
+                          Text('Bs ${state.listProduct[index].price.toString()}', style: const TextStyle(fontSize: 11)),
                 
                           IconButton(
                             onPressed: (){}, 

@@ -35,5 +35,10 @@ class OnUltimoQuery extends ProductEvent{
   const OnUltimoQuery(this.ultimoQuery);
 }
 
+class OnQuantityUpdate extends ProductEvent{
+  final ProductModel product;
+  const OnQuantityUpdate(this.product);
+}
+
 class OnResetQuery extends ProductEvent{ }
 

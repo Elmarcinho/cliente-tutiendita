@@ -4,27 +4,30 @@ class ShoopingCartState extends Equatable {
 
   final int quantity;
   final double total;
-  final List<DetailOrderModel> listDetailOrder;
+  final List<ProductModel> listProduct;
+  //final List<DetailOrderModel> listDetailOrder;
   
   const ShoopingCartState({
 
     this.quantity = 0,
     this.total = 0.0,
-    this.listDetailOrder= const [],
+    this.listProduct = const []
+    //this.listDetailOrder= const [],
   });
 
   ShoopingCartState copyWith({
     int? quantity,
     double? total,
-    List<DetailOrderModel>? listDetailOrder,
-    bool? visible
+    List<ProductModel>? listProduct
+    //List<DetailOrderModel>? listDetailOrder,
 
   }) => ShoopingCartState(
     quantity: quantity ?? this.quantity,
     total: total ?? this.total,
-    listDetailOrder: listDetailOrder ?? this.listDetailOrder,
+    listProduct: listProduct ?? this.listProduct
+    //listDetailOrder: listDetailOrder ?? this.listDetailOrder,
   );
   
   @override
-  List<Object> get props => [ quantity, total, listDetailOrder ];
+  List<Object> get props => [ quantity, total, listProduct ];
 }

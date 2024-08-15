@@ -15,8 +15,11 @@ class ProductModel {
   int stock;
   String image;
   bool state;
+  int quantity;
   String idCategory;
   String titleCategory;
+  bool visible;
+  int seconds;
 
   ProductModel({
     this.id ='',
@@ -28,7 +31,10 @@ class ProductModel {
     this.image = '',
     this.state = false,
     this.idCategory = '',
+    this.quantity = 1,
     this.titleCategory = '',
+    this.visible = false,
+    this.seconds = 2
   });
 
 
@@ -41,8 +47,11 @@ class ProductModel {
     stock       : json["stock"].toInt(),
     image       : json["image"],
     state       : json["state"],
+    quantity    : 1,
     idCategory  : json["idCategory"],
     titleCategory: json["titleCategory"],
+    visible     : false,
+    seconds     : 2
   );
 
   Map<String, dynamic> toJson() => {
@@ -54,7 +63,10 @@ class ProductModel {
     "stock"        : stock,
     "image"        : image,
     "state"        : state,
+    "quantity"     : 1,
     "idCategory"   : idCategory,
     "titleCategory": titleCategory,
+    "visible"      : false,
+    "seconds"      : 2
   };
 }

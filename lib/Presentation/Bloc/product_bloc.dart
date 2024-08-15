@@ -24,6 +24,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<GetProductsEvent>( _onGetProducts);
     on<ProductoEvent>( _onProducto);
     on<OnSearchProduct>( _onSearchProduct);
+    on<OnQuantityUpdate>( _onQuantityUpdate);
     on<OnTitleQuery>( _onTitleQuery);
     on<OnResetQuery>( _onResetQuery);
     on<OnUltimoQuery>( _onUltimoQuery);
@@ -42,7 +43,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
   }
 
-   void _onProducto( ProductoEvent event, Emitter emit){
+  void _onProducto( ProductoEvent event, Emitter emit){
     
     emit(
       state.copyWith(
@@ -59,6 +60,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     emit( 
       state.copyWith(
         listProductRepository: query,
+      )
+    );
+  }
+
+  void _onQuantityUpdate( OnQuantityUpdate event, Emitter emit) async{
+    
+    emit(
+      state.copyWith(
+        listProduct: state.listProduct.map((e) => e.id == event.product.id? event.product : e).toList()
       )
     );
   }

@@ -9,7 +9,5 @@ class ShoopingCartEvent extends Equatable {
 
 class AddProductEvent extends ShoopingCartEvent{
   final ProductModel product;
-  final int quantity;
-  final bool visible;
-  const AddProductEvent(this.product, this.quantity, this.visible);
+  const AddProductEvent(this.product);
 }

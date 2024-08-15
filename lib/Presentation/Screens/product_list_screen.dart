@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,8 +10,15 @@ import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
 
 
 
-class ProductListSreen extends StatelessWidget {
+class ProductListSreen extends StatefulWidget {
   const ProductListSreen({super.key});
+
+  @override
+  State<ProductListSreen> createState() => _ProductListSreenState();
+}
+
+class _ProductListSreenState extends State<ProductListSreen> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +55,7 @@ class ProductListSreen extends StatelessWidget {
                 ),
                 itemCount: state.listProduct.length,
                 itemBuilder: (contex, i) =>
-                    _crearItem(context, state.listProduct[i]),
+                  _crearItem(context, state.listProduct[i]),
               ),
             ),
           ],
@@ -55,8 +64,7 @@ class ProductListSreen extends StatelessWidget {
     );
   }
 
-
-  Widget _crearItem(BuildContext context, ProductModel producto) {
+  Widget _crearItem(BuildContext context, ProductModel product) {
     
     return Stack(
       children: [
@@ -72,7 +80,7 @@ class ProductListSreen extends StatelessWidget {
                   SizedBox(
                     height: 80.0,
                     width: double.infinity,
-                    child: (producto.image.isEmpty)
+                    child: (product.image.isEmpty)
                         ? Image.asset('assets/no-image.jpg')
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
@@ -82,7 +90,7 @@ class ProductListSreen extends StatelessWidget {
                               height: 100.0,
                               width: double.infinity,
                               fit: BoxFit.cover,
-                              image: NetworkImage(producto.image),
+                              image: NetworkImage(product.image),
                             )
                         ),
                   ),
@@ -92,27 +100,27 @@ class ProductListSreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      'Bs. ${producto.price}',
+                      'Bs. ${product.price}',
                       style: const TextStyle( fontSize: 15, fontWeight: FontWeight.bold)
                     )
                   ),
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      '${producto.title[0].toUpperCase()}${producto.title.substring(1)}',
+                      '${product.title[0].toUpperCase()}${product.title.substring(1)}',
                       style: const TextStyle(fontSize: 12)
                     )
                   ),
                   SizedBox(
                     width: double.infinity, 
-                    child: Text(producto.description1,
+                    child: Text(product.description1,
                       style: const TextStyle(fontSize: 12)
                     )
                   ),
                   Expanded(
                     child: SizedBox(
                       width: double.infinity, 
-                      child: Text(producto.description2,
+                      child: Text(product.description2,
                         style: const TextStyle(fontSize: 12)
                       )
                     ),
@@ -121,7 +129,7 @@ class ProductListSreen extends StatelessWidget {
               ),
             ),
             onTap: () {
-              context.read<ProductBloc>().add(ProductoEvent(producto));
+              context.read<ProductBloc>().add(ProductoEvent(product));
               Navigator.pushNamed(context, 'product');
             },
           ),
@@ -141,15 +149,27 @@ class ProductListSreen extends StatelessWidget {
               ),
               child: const Icon(Icons.add, color: Color.fromARGB(255, 74, 224, 79)),
               onPressed: (){
-                context.read<ShoopingCartBloc>().add(AddProductEvent(producto, 1, true));
-             
+                setState(() {
+                  product.visible = true;
+                  context.read<ShoopingCartBloc>().add(AddProductEvent(product));
+                });
+                Timer(Duration(seconds: product.seconds), (){
+                  if (mounted){
+                    setState(() {
+                      product.visible = false;
+                      context.read<ShoopingCartBloc>().add(AddProductEvent(product));
+                    }); 
+                  }else{
+                    product.visible = false;
+                  }                  
+                });
               },
             ),
           ),
         ),
 
         Visibility(
-          visible: true,
+          visible: product.visible,
           child: Positioned(
             right: 7,
             child: Container(
@@ -171,18 +191,29 @@ class ProductListSreen extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.remove_circle_outline, size: 30),
                           color: const Color.fromARGB(255, 74, 224, 79), 
-                        onPressed: (){}
+                        onPressed: (){
+                          setState(() {
+                            product.quantity--;
+                            context.read<ProductBloc>().add(OnQuantityUpdate(product));
+                          });
+                        }
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 20,
-                          child: Text( '20', 
-                            style: TextStyle(fontSize: 15.0)
+                          child: Text( product.quantity.toString(), 
+                            style: const TextStyle(fontSize: 15.0)
                           ),
                         ),
                         IconButton(
                           icon: const Icon(Icons.add_circle_outline, size: 30),
                           color: const Color.fromARGB(255, 74, 224, 79), 
-                        onPressed: (){}
+                          onPressed: (){
+                            setState(() {
+                              product.quantity++;
+                              product.seconds++;
+                              context.read<ProductBloc>().add(OnQuantityUpdate(product));
+                            });
+                          }
                         ),
                       ],
                     ),
@@ -196,6 +227,4 @@ class ProductListSreen extends StatelessWidget {
     );
     
   }
-
-
 }

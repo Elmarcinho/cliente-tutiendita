@@ -1,5 +1,3 @@
-
-import 'package:cliente_tutiendita/Model/detail_order_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,22 +15,21 @@ class ShoopingCartBloc extends Bloc<ShoopingCartEvent, ShoopingCartState> {
 
   void _addProduct( AddProductEvent event, Emitter emit){
 
-    DetailOrderModel detail = DetailOrderModel();
+    //DetailOrderModel detail = DetailOrderModel();
 
-    if( state.listDetailOrder.isEmpty || !state.listDetailOrder.any((element) => element.idProduct == event.product.id)){
+    if( state.listProduct.isEmpty || !state.listProduct.any((element) => element.id == event.product.id)){
 
-      detail.idProduct = event.product.id;
-      detail.title = event.product.title;
-      detail.description1 = event.product.description1;
-      detail.description2 = event.product.description2;
-      detail.price = event.product.price;
-      detail.image = event.product.image;
-      detail.quantity = event.quantity;
+      // detail.idProduct = event.product.id;
+      // detail.title = event.product.title;
+      // detail.description1 = event.product.description1;
+      // detail.description2 = event.product.description2;
+      // detail.price = event.product.price;
+      // detail.image = event.product.image;
+      // detail.quantity = event.quantity;
 
       emit(
         state.copyWith(
-          listDetailOrder: List<DetailOrderModel>.from(state.listDetailOrder)..add(detail),
-          visible: event.visible
+          listProduct  : List<ProductModel>.from(state.listProduct)..add(event.product),
         )
       );
     }else{
