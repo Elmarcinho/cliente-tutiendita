@@ -7,12 +7,11 @@ class ProductState extends Equatable {
   final bool isEnabled;
   final ProductModel? product;
   final List<ProductModel> listProduct;
+  final List<ProductModel> listProductRepository;
+  final List<ProductModel> listProductShoopingCart;
   final bool isCreate;
   final TitleQuery titleQuery;
-  final List<CategoryModel> listCategory;
-  final List<CategoryModel> listCategoryFiltro;
-  final List<String> selectCategory;
-  final List<ProductModel> listProductRepository;
+  final int quantity;
 
   const ProductState({
     this.formStatus = false,
@@ -20,12 +19,11 @@ class ProductState extends Equatable {
     this.isEnabled = false,
     this.product,
     this.listProduct= const [],
+    this.listProductRepository= const [],
+    this.listProductShoopingCart= const [],
     this.isCreate = false,
     this.titleQuery = const TitleQuery.dirty(''),
-    this.listCategory = const[],
-    this.listCategoryFiltro = const[],
-    this.selectCategory = const [],
-    this.listProductRepository= const []
+    this.quantity = 0
   });
 
   ProductState copyWith({
@@ -34,12 +32,11 @@ class ProductState extends Equatable {
     bool? isEnabled,
     ProductModel?  product,
     List<ProductModel>? listProduct,
+    List<ProductModel>? listProductRepository,
+    List<ProductModel>? listProductShoopingCart,
     bool? isCreate,
     TitleQuery? titleQuery,
-    List<CategoryModel>? listCategory,
-    List<CategoryModel>? listCategoryFiltro,
-    List<String>? selectCategory,
-    List<ProductModel>? listProductRepository
+    int? quantity
 
   }) => ProductState(
     formStatus: formStatus ?? this.formStatus,
@@ -47,17 +44,16 @@ class ProductState extends Equatable {
     isEnabled: isEnabled ?? this.isEnabled,
     product: product ?? this.product,
     listProduct: listProduct ?? this.listProduct,
+    listProductRepository: listProductRepository ?? this.listProductRepository,
+    listProductShoopingCart: listProductShoopingCart ?? this.listProductShoopingCart,
     isCreate: isCreate ?? this.isCreate,
     titleQuery: titleQuery ?? this.titleQuery,
-    listCategory: listCategory ?? this.listCategory,
-    listCategoryFiltro: listCategoryFiltro ?? this.listCategoryFiltro,
-    selectCategory: selectCategory ?? this.selectCategory,
-    listProductRepository: listProductRepository ?? this.listProductRepository
+    quantity: quantity ?? this.quantity
   );
   
   @override
-  List<Object?> get props => [formStatus, isFormValid, isEnabled, product, listProduct, isCreate, titleQuery, 
-    listCategory,listCategoryFiltro, selectCategory, listProductRepository];
+  List<Object?> get props => [formStatus, isFormValid, isEnabled, product, listProduct, listProductRepository,
+                              listProductShoopingCart, isCreate, titleQuery, quantity];
 }
 
 

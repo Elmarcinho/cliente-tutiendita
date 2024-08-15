@@ -22,17 +22,9 @@ class OnSearchProduct extends ProductEvent{
   const OnSearchProduct(this.query);
 }
 
-//*Eventos del formulario Producto
-class OnTitleQuery extends ProductEvent{
-  final String titleQuery;
-  const OnTitleQuery(this.titleQuery);
-}
-
-//*Evento
-
-class OnUltimoQuery extends ProductEvent{
-  final String ultimoQuery;
-  const OnUltimoQuery(this.ultimoQuery);
+class AddProductShoopingCartEvent extends ProductEvent{
+  final ProductModel product;
+  const AddProductShoopingCartEvent(this.product);
 }
 
 class OnQuantityUpdate extends ProductEvent{
@@ -41,4 +33,16 @@ class OnQuantityUpdate extends ProductEvent{
 }
 
 class OnResetQuery extends ProductEvent{ }
+
+class OnTitleQuery extends ProductEvent{
+  final String titleQuery;
+  const OnTitleQuery(this.titleQuery);
+}
+
+class OnUltimoQuery extends ProductEvent{
+  final String ultimoQuery;
+  const OnUltimoQuery(this.ultimoQuery);
+}
+
+
 

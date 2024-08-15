@@ -20,6 +20,7 @@ class ProductModel {
   String titleCategory;
   bool visible;
   int seconds;
+  bool clic;
 
   ProductModel({
     this.id ='',
@@ -34,7 +35,8 @@ class ProductModel {
     this.quantity = 1,
     this.titleCategory = '',
     this.visible = false,
-    this.seconds = 2
+    this.seconds = 4,
+    this.clic = false
   });
 
 
@@ -51,7 +53,8 @@ class ProductModel {
     idCategory  : json["idCategory"],
     titleCategory: json["titleCategory"],
     visible     : false,
-    seconds     : 2
+    seconds     : 2,
+    clic        : false
   );
 
   Map<String, dynamic> toJson() => {
@@ -67,6 +70,7 @@ class ProductModel {
     "idCategory"   : idCategory,
     "titleCategory": titleCategory,
     "visible"      : false,
-    "seconds"      : 2
+    "seconds"      : 2,
+    "clic"         : false
   };
 }

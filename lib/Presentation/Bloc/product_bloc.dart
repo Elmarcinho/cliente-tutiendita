@@ -4,7 +4,6 @@ import 'package:formz/formz.dart';
 
 import 'package:cliente_tutiendita/Negocio/validation/validation.dart';
 import 'package:cliente_tutiendita/Model/product_model.dart';
-import 'package:cliente_tutiendita/Model/category_model.dart';
 import 'package:cliente_tutiendita/Provider/category_provider.dart';
 import 'package:cliente_tutiendita/Provider/product_provider.dart';
 
@@ -24,6 +23,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<GetProductsEvent>( _onGetProducts);
     on<ProductoEvent>( _onProducto);
     on<OnSearchProduct>( _onSearchProduct);
+    on<AddProductShoopingCartEvent>( _addProductShoopingCart);
     on<OnQuantityUpdate>( _onQuantityUpdate);
     on<OnTitleQuery>( _onTitleQuery);
     on<OnResetQuery>( _onResetQuery);
@@ -64,10 +64,29 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
   }
 
+  void _addProductShoopingCart( AddProductShoopingCartEvent event, Emitter emit){
+
+    if( state.listProductShoopingCart.isEmpty || !state.listProductShoopingCart.any((element) => element.id == event.product.id)){
+
+      emit(
+        state.copyWith(
+          quantity: state.quantity + event.product.quantity,
+          listProductShoopingCart  : List<ProductModel>.from(state.listProductShoopingCart)..add(event.product),
+        )
+      );
+    }
+  }
+
   void _onQuantityUpdate( OnQuantityUpdate event, Emitter emit) async{
     
+    int total = 0;
+    for (int i = 0; i < state.listProductShoopingCart.length ; i++){
+       total = total + state.listProductShoopingCart[i].quantity;
+    }
+
     emit(
       state.copyWith(
+        quantity: total,
         listProduct: state.listProduct.map((e) => e.id == event.product.id? event.product : e).toList()
       )
     );

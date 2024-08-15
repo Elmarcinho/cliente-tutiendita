@@ -10,8 +10,6 @@ import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
 import 'package:cliente_tutiendita/Presentation/Widgets/widgets.dart';
 import 'package:cliente_tutiendita/Services/services.dart';
 
-
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -20,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  
   int selectIndex = 1;
   String title = '';
   List screens = [
@@ -31,12 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     FlutterNativeSplash.remove();
 
     return BlocBuilder<ProductBloc, ProductState>(
-      builder: (context, state) { 
-
+      builder: (context, state) {
         return Scaffold(
           drawer: const SideMenu(),
           appBar: AppBar(
@@ -44,39 +39,47 @@ class _HomeScreenState extends State<HomeScreen> {
             centerTitle: true,
             actions: [
               IconButton(
-                icon: const Icon(FontAwesomeIcons.whatsapp, color: Colors.green, size: 40,),
+                icon: const Icon(
+                  FontAwesomeIcons.whatsapp,
+                  color: Colors.green,
+                  size: 40,
+                ),
                 onPressed: () {
                   WhatsAppService.launchWhatsAppString('');
                 },
               )
             ],
           ),
-          bottomNavigationBar: CurvedNavigationBar(
-            height: 60,
-            backgroundColor: Colors.brown,
-            index: selectIndex,
-            items: [
-              const Icon(
-                Icons.search, size: 30
-              ),
-              const Icon(
-                Icons.home, size: 30
-              ),
-              badges.Badge(
-                  position: badges.BadgePosition.topEnd(top: -14, end: -10),
-                  showBadge: true,
-                  badgeAnimation: const badges.BadgeAnimation.slide(),
-                  badgeContent: const Text('7', style: TextStyle(color: Colors.white),),
-                  child: const Icon(Icons.shopping_cart_outlined, size: 30)
-                  
-                ),
-            ],
-            onTap: (index)=> setState(() { 
-              selectIndex = index ; 
-              index == 0? title = 'Búsqueda' : (index ==2 ? title= 'Mi carrito' : title = '');
-            }),
+          bottomNavigationBar: BlocBuilder<ProductBloc, ProductState>(
+            builder: (context, state) {
+              return CurvedNavigationBar(
+                height: 60,
+                backgroundColor: Colors.brown,
+                index: selectIndex,
+                items: [
+                  const Icon(Icons.search, size: 30),
+                  const Icon(Icons.home, size: 30),
+                  badges.Badge(
+                      position: badges.BadgePosition.topEnd(top: -14, end: -10),
+                      showBadge: state.quantity != 0 ? true : false,
+                      badgeAnimation: const badges.BadgeAnimation.slide(),
+                      badgeContent: Text(
+                        state.quantity.toString(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      child:
+                          const Icon(Icons.shopping_cart_outlined, size: 30)),
+                ],
+                onTap: (index) => setState(() {
+                  selectIndex = index;
+                  index == 0
+                      ? title = 'Búsqueda'
+                      : (index == 2 ? title = 'Mi carrito' : title = '');
+                }),
+              );
+            },
           ),
-          body: screens[ selectIndex ],
+          body: screens[selectIndex],
         );
       },
     );

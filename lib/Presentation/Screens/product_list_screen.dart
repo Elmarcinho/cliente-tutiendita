@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:cliente_tutiendita/Presentation/Bloc/shooping_cart_bloc.dart';
 import 'package:cliente_tutiendita/Presentation/Widgets/widgets.dart';
 import 'package:cliente_tutiendita/Model/product_model.dart';
 import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
@@ -143,21 +142,24 @@ class _ProductListSreenState extends State<ProductListSreen> {
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
                 side: const BorderSide( width: 2, color: Color.fromARGB(255, 74, 224, 79)),
-                backgroundColor: Colors.transparent,
+                backgroundColor: product.clic? const Color.fromARGB(255, 74, 224, 79) :Colors.transparent,
                 shape: const CircleBorder(),
               padding: const EdgeInsets.all(2),          
               ),
-              child: const Icon(Icons.add, color: Color.fromARGB(255, 74, 224, 79)),
+              child: product.clic
+                ? Text(product.quantity.toString(), style: const TextStyle( color: Colors.white), ) 
+                : const Icon(Icons.add, color: Color.fromARGB(255, 74, 224, 79)),
               onPressed: (){
                 setState(() {
                   product.visible = true;
-                  context.read<ShoopingCartBloc>().add(AddProductEvent(product));
+                  product.clic = true;
+                  context.read<ProductBloc>().add(AddProductShoopingCartEvent(product));
                 });
-                Timer(Duration(seconds: product.seconds), (){
+                Future.delayed(Duration(seconds: product.seconds), (){
                   if (mounted){
                     setState(() {
                       product.visible = false;
-                      context.read<ShoopingCartBloc>().add(AddProductEvent(product));
+                      context.read<ProductBloc>().add(AddProductShoopingCartEvent(product));
                     }); 
                   }else{
                     product.visible = false;
@@ -193,15 +195,23 @@ class _ProductListSreenState extends State<ProductListSreen> {
                           color: const Color.fromARGB(255, 74, 224, 79), 
                         onPressed: (){
                           setState(() {
-                            product.quantity--;
-                            context.read<ProductBloc>().add(OnQuantityUpdate(product));
+                            if(product.quantity > 1 ){
+                              product.quantity--;
+                              product.seconds = product.seconds++;
+                              context.read<ProductBloc>().add(OnQuantityUpdate(product));
+                            }else{
+                              //*Quitar de carrito de compras
+                            }
+                            
                           });
                         }
                         ),
                         SizedBox(
                           width: 20,
-                          child: Text( product.quantity.toString(), 
-                            style: const TextStyle(fontSize: 15.0)
+                          child: Center(
+                            child: Text( product.quantity.toString(), 
+                              style: const TextStyle(fontSize: 15.0)
+                            ),
                           ),
                         ),
                         IconButton(
@@ -210,7 +220,7 @@ class _ProductListSreenState extends State<ProductListSreen> {
                           onPressed: (){
                             setState(() {
                               product.quantity++;
-                              product.seconds++;
+                              product.seconds = product.seconds++;
                               context.read<ProductBloc>().add(OnQuantityUpdate(product));
                             });
                           }
@@ -225,6 +235,5 @@ class _ProductListSreenState extends State<ProductListSreen> {
         ),
       ],
     );
-    
   }
 }
