@@ -1,4 +1,5 @@
 import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -88,7 +89,10 @@ class ShoopingCartScreen extends StatelessWidget {
                             ),
                           ),
                 
-                          Text('Bs ${state.listProductShoopingCart[index].price.toString()}', style: const TextStyle(fontSize: 11)),
+                          Text(
+                            'Bs ${(state.listProductShoopingCart[index].price * state.listProductShoopingCart[index].quantity).toStringAsFixed(2)}', 
+                            style: const TextStyle(fontSize: 11)
+                          ),
                 
                           IconButton(
                             onPressed: (){}, 
@@ -99,11 +103,11 @@ class ShoopingCartScreen extends StatelessWidget {
                     )
                     : Container(
                       margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text('Total Parcial', style: TextStyle( fontSize: 16, fontWeight: FontWeight.w700)),
-                            Text('750.58', style: TextStyle( fontSize: 16, fontWeight: FontWeight.w700))
+                            const Text('Total Parcial', style: TextStyle( fontSize: 16, fontWeight: FontWeight.w700)),
+                            Text(state.total.toStringAsFixed(2), style: const TextStyle( fontSize: 16, fontWeight: FontWeight.w700))
                           ],
                         ),
                       );
@@ -115,31 +119,28 @@ class ShoopingCartScreen extends StatelessWidget {
             Container(
               height: 90,
               color: Colors.black12,
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 15),
-                    height: 35,
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text('Total', style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold)),
-                        Text('750.58', style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold))
-                      ],
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                height: 35,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text('Total', style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox( width: 50),
+                    Text(state.total.toStringAsFixed(2), style: const TextStyle( fontSize: 20, fontWeight: FontWeight.bold)),
+                    const Spacer(),
+                    MaterialButton(
+                      onPressed: (){},
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide( color: Colors.black12), 
+                        borderRadius: BorderRadius.circular(8)
+                      ), 
+                      child: const Text('Enviar Compra'),
                     ),
-                  ),
-                  MaterialButton(
-                    onPressed: (){},
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide( color: Colors.black12), 
-                      borderRadius: BorderRadius.circular(8)
-                    ), 
-                    child: const Text('Realizar pedido'),
-                  )
-                ],
+                  ],
+                ),
               ),
-            ),
+            )
           ],
         );
       },

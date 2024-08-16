@@ -12,6 +12,7 @@ class ProductState extends Equatable {
   final bool isCreate;
   final TitleQuery titleQuery;
   final int quantity;
+  final double total;
 
   const ProductState({
     this.formStatus = false,
@@ -23,7 +24,8 @@ class ProductState extends Equatable {
     this.listProductShoopingCart= const [],
     this.isCreate = false,
     this.titleQuery = const TitleQuery.dirty(''),
-    this.quantity = 0
+    this.quantity = 0,
+    this.total = 0.0
   });
 
   ProductState copyWith({
@@ -36,7 +38,8 @@ class ProductState extends Equatable {
     List<ProductModel>? listProductShoopingCart,
     bool? isCreate,
     TitleQuery? titleQuery,
-    int? quantity
+    int? quantity,
+    double? total
 
   }) => ProductState(
     formStatus: formStatus ?? this.formStatus,
@@ -48,12 +51,13 @@ class ProductState extends Equatable {
     listProductShoopingCart: listProductShoopingCart ?? this.listProductShoopingCart,
     isCreate: isCreate ?? this.isCreate,
     titleQuery: titleQuery ?? this.titleQuery,
-    quantity: quantity ?? this.quantity
+    quantity: quantity ?? this.quantity,
+    total: total ?? this.total
   );
   
   @override
   List<Object?> get props => [formStatus, isFormValid, isEnabled, product, listProduct, listProductRepository,
-                              listProductShoopingCart, isCreate, titleQuery, quantity];
+                              listProductShoopingCart, isCreate, titleQuery, quantity, total];
 }
 
 

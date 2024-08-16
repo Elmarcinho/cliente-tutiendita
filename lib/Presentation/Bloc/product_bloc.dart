@@ -72,6 +72,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         state.copyWith(
           quantity: state.quantity + event.product.quantity,
           listProductShoopingCart  : List<ProductModel>.from(state.listProductShoopingCart)..add(event.product),
+          
+        ),
+      );
+      emit(
+        state.copyWith(
+          total: state.listProductShoopingCart.fold<double>( 0.0, (previousValue, element) => previousValue + (element.quantity * element.price)),
         )
       );
     }
@@ -79,15 +85,19 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   void _onQuantityUpdate( OnQuantityUpdate event, Emitter emit) async{
     
-    int total = 0;
-    for (int i = 0; i < state.listProductShoopingCart.length ; i++){
-       total = total + state.listProductShoopingCart[i].quantity;
-    }
-
+    //int total = 0;
+    // for (int i = 0; i < state.listProductShoopingCart.length ; i++){
+    //    total = total + state.listProductShoopingCart[i].quantity;
+    // }
+    emit(
+      state.copyWith( 
+        quantity: state.listProductShoopingCart.fold<int>( 0, (previousValue, element) => previousValue + element.quantity),
+        listProduct: state.listProduct.map((e) => e.id == event.product.id? event.product : e).toList(),
+      )
+    );
     emit(
       state.copyWith(
-        quantity: total,
-        listProduct: state.listProduct.map((e) => e.id == event.product.id? event.product : e).toList()
+        total: state.listProductShoopingCart.fold<double>( 0.0, (previousValue, element) => previousValue + (element.quantity * element.price)),
       )
     );
   }
