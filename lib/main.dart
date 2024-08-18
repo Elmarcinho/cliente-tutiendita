@@ -1,5 +1,3 @@
-import 'package:cliente_tutiendita/Presentation/Bloc/category_bloc.dart';
-import 'package:cliente_tutiendita/Presentation/Bloc/shooping_cart_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,6 +10,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:cliente_tutiendita/config/app_theme.dart';
 import 'package:cliente_tutiendita/Services/user_preferencia_service.dart';
 import 'package:cliente_tutiendita/Presentation/Screens/screen.dart';
+import 'package:cliente_tutiendita/Presentation/Bloc/category_bloc.dart';
 import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
 import 'package:cliente_tutiendita/Provider/product_provider.dart';
 import 'package:cliente_tutiendita/Provider/category_provider.dart';
@@ -44,7 +43,6 @@ class MainApp extends StatelessWidget {
         BlocProvider(create: (context) => LoginBloc()),
         BlocProvider(create: (context) => CategoryBloc(categoryProvider)..add(const GetCategorysEvent())),
         BlocProvider(create: (context) => ProductBloc(productProvider, categoryProvider)..add(const GetProductsEvent())),
-        BlocProvider(create: (context) => ShoopingCartBloc())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

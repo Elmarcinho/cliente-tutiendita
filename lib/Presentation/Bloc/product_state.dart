@@ -5,7 +5,7 @@ class ProductState extends Equatable {
   final bool formStatus;
   final bool isFormValid;
   final bool isEnabled;
-  final ProductModel? product;
+  
   final List<ProductModel> listProduct;
   final List<ProductModel> listProductRepository;
   final List<ProductModel> listProductShoopingCart;
@@ -18,7 +18,6 @@ class ProductState extends Equatable {
     this.formStatus = false,
     this.isFormValid = false,
     this.isEnabled = false,
-    this.product,
     this.listProduct= const [],
     this.listProductRepository= const [],
     this.listProductShoopingCart= const [],
@@ -45,7 +44,6 @@ class ProductState extends Equatable {
     formStatus: formStatus ?? this.formStatus,
     isFormValid: isFormValid ?? this.isFormValid,
     isEnabled: isEnabled ?? this.isEnabled,
-    product: product ?? this.product,
     listProduct: listProduct ?? this.listProduct,
     listProductRepository: listProductRepository ?? this.listProductRepository,
     listProductShoopingCart: listProductShoopingCart ?? this.listProductShoopingCart,
@@ -56,7 +54,7 @@ class ProductState extends Equatable {
   );
   
   @override
-  List<Object?> get props => [formStatus, isFormValid, isEnabled, product, listProduct, listProductRepository,
+  List<Object> get props => [formStatus, isFormValid, isEnabled, listProduct, listProductRepository,
                               listProductShoopingCart, isCreate, titleQuery, quantity, total];
 }
 

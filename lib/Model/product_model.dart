@@ -19,7 +19,6 @@ class ProductModel {
   String idCategory;
   String titleCategory;
   bool visible;
-  int seconds;
   bool clic;
 
   ProductModel({
@@ -35,7 +34,6 @@ class ProductModel {
     this.quantity = 1,
     this.titleCategory = '',
     this.visible = false,
-    this.seconds = 4,
     this.clic = false
   });
 
@@ -53,7 +51,6 @@ class ProductModel {
     idCategory  : json["idCategory"],
     titleCategory: json["titleCategory"],
     visible     : false,
-    seconds     : 2,
     clic        : false
   );
 
@@ -70,7 +67,6 @@ class ProductModel {
     "idCategory"   : idCategory,
     "titleCategory": titleCategory,
     "visible"      : false,
-    "seconds"      : 2,
     "clic"         : false
   };
 }

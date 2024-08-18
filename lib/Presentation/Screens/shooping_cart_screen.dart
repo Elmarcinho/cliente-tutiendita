@@ -1,12 +1,17 @@
-import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
 
-class ShoopingCartScreen extends StatelessWidget {
+
+class ShoopingCartScreen extends StatefulWidget {
   const ShoopingCartScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ShoopingCartScreen> createState() => _ShoopingCartScreenState();
+}
+
+class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
   @override
   Widget build(BuildContext context) {
     
@@ -27,79 +32,187 @@ class ShoopingCartScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   
                   return (index < state.listProductShoopingCart.length)
-                    ?Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 60,
-                            width: 60,
-                            child: (state.listProductShoopingCart[index].image.isEmpty)
-                                ? Image.asset('assets/no-image.jpg')
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: FadeInImage(
-                                      placeholder:
-                                          const AssetImage('assets/jar-loading.gif'),
-                                      height: 100.0,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(state.listProductShoopingCart[index].image),
-                                    )
-                                ),
-                          ),
-                          SizedBox(
-                            width: 100,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(state.listProductShoopingCart[index].title, style: const TextStyle(fontSize: 11)),
-                                Text(state.listProductShoopingCart[index].description1, style: const TextStyle(fontSize: 11)),
-                                Text(state.listProductShoopingCart[index].description2, style: const TextStyle(fontSize: 11)),
-                                Text('Bs ${state.listProductShoopingCart[index].price.toString()}', 
-                                  style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic)
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 25,
-                            width: 60,
-                            child: TextFormField(
-                              initialValue: state.listProductShoopingCart[index].quantity.toString(),
-                              textAlign: TextAlign.center,
-                              textAlignVertical: TextAlignVertical.center,
-                              style: const TextStyle( fontSize: 16),
-                              keyboardType:  const TextInputType.numberWithOptions(signed: true),
-                              decoration:   InputDecoration(
-                                contentPadding: EdgeInsets.zero,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide: const BorderSide( color: Colors.green)
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide( color: Colors.black)
-                                ),
-                                isDense: true,
-                                filled: true,
-                                fillColor: Colors.white
+                    ?Stack(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 60,
+                                width: 60,
+                                child: (state.listProductShoopingCart[index].image.isEmpty)
+                                    ? Image.asset('assets/no-image.jpg')
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(8.0),
+                                        child: FadeInImage(
+                                          placeholder:
+                                              const AssetImage('assets/jar-loading.gif'),
+                                          height: 100.0,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(state.listProductShoopingCart[index].image),
+                                        )
+                                    ),
                               ),
+                              SizedBox(
+                                width: 100,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    Text(state.listProductShoopingCart[index].title, style: const TextStyle(fontSize: 11)),
+                                    Text(state.listProductShoopingCart[index].description1, style: const TextStyle(fontSize: 11)),
+                                    Text(state.listProductShoopingCart[index].description2, style: const TextStyle(fontSize: 11)),
+                                    Text('Bs ${state.listProductShoopingCart[index].price.toString()}', 
+                                      style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic)
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 25,
+                                width: 60,
+                                child: MaterialButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      state.listProductShoopingCart[index].visible = true;
+                                      state.listProductShoopingCart[index].clic = true;
+                                      context.read<ProductBloc>().add(OnVisibility(state.listProductShoopingCart[index]));
+                                      context.read<ProductBloc>().add(AddProductShoopingCartEvent(state.listProductShoopingCart[index]));
+                                    });
+                                    Future.delayed(const Duration(seconds: 3), (){
+                                      if (mounted){
+                                        setState(() {
+                                          state.listProductShoopingCart[index].visible = false;
+                                          context.read<ProductBloc>().add(OnVisibility(state.listProductShoopingCart[index]));
+                                        }); 
+                                      }else{
+                                        state.listProductShoopingCart[index].visible = false;
+                                      }                  
+                                    });
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide( color: Colors.green), 
+                                    borderRadius: BorderRadius.circular(5)
+                                  ), 
+                                  child: Text(
+                                    state.listProductShoopingCart[index].quantity.toString(),
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                                        
+                              SizedBox(
+                                width: 60,
+                                child: Center(
+                                  child: Text(
+                                    'Bs ${(state.listProductShoopingCart[index].price * state.listProductShoopingCart[index].quantity).toStringAsFixed(2)}', 
+                                    style: const TextStyle(fontSize: 11)
+                                  ),
+                                ),
+                              ),
+                                        
+                              IconButton(
+                                icon: const Icon(Icons.delete_forever, color: Colors.red),
+                                onPressed: (){
+                        
+                                  final dialog = AlertDialog(
+                                    title: const Text('¿Esta seguro de quitar el producto del carrito?'),
+                                    actions: [
+                                      TextButton(
+                                        child: const Text('No'),
+                                        onPressed: (){
+                                          Navigator.of(context).pop();
+                                        }, 
+                                      ),
+                                      TextButton(
+                                        child: const Text('Si, borrar'),
+                                        onPressed: (){
+                                          state.listProductShoopingCart[index].visible = false;
+                                          state.listProductShoopingCart[index].clic = false;
+                                          context.read<ProductBloc>().add(OnVisibility(state.listProductShoopingCart[index]));
+                                          context.read<ProductBloc>().add(DeleteProductShoopingCartEvent(state.listProductShoopingCart[index], index));
+                                          Navigator.of(context).pop();
+                                        }, 
+                                      ),
+                                    ],
+                                  );
+                        
+                                  showDialog(context: context, builder: ( _ ) => dialog);
+                                  
+                                } 
+                              ),
+                              
+                            ],
+                          )
+                        ),
+                        Visibility(
+                          visible: state.listProductShoopingCart[index].visible,
+                          child: Positioned(
+                            top: 22,
+                            right: 125,
+                            child: Container(
+                              height: 38,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all( color: const Color.fromARGB(255, 74, 224, 79)),
+                                borderRadius: BorderRadius.circular(5)
+                              ),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: -6,
+                                    right: -9,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.remove_circle_outline, size: 30),
+                                          color: const Color.fromARGB(255, 74, 224, 79), 
+                                          onPressed: (){
+                          
+                                            if(state.listProductShoopingCart[index].quantity > 1 ){
+                                              state.listProductShoopingCart[index].quantity--;
+                                              context.read<ProductBloc>().add(OnQuantityUpdate(state.listProductShoopingCart[index]));
+                                            }else{
+                                              state.listProductShoopingCart[index].visible = false;
+                                              state.listProductShoopingCart[index].clic = false;
+                                              context.read<ProductBloc>().add(OnVisibility(state.listProductShoopingCart[index]));
+                                              context.read<ProductBloc>().add(DeleteProductShoopingCartEvent(state.listProductShoopingCart[index], index));
+                                            }
+                                          }
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                          child: Center(
+                                            child: Text( state.listProductShoopingCart[index].quantity.toString(), 
+                                              style: const TextStyle(fontSize: 15.0)
+                                            ),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.add_circle_outline, size: 30),
+                                          color: const Color.fromARGB(255, 74, 224, 79), 
+                                          onPressed: (){
+
+                                            state.listProductShoopingCart[index].quantity++;
+                                            context.read<ProductBloc>().add(OnQuantityUpdate(state.listProductShoopingCart[index]));
+                                          
+                                          }
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),  
                             ),
                           ),
-                
-                          Text(
-                            'Bs ${(state.listProductShoopingCart[index].price * state.listProductShoopingCart[index].quantity).toStringAsFixed(2)}', 
-                            style: const TextStyle(fontSize: 11)
-                          ),
-                
-                          IconButton(
-                            onPressed: (){}, 
-                            icon: const Icon(Icons.delete_forever, color: Colors.red)
-                          )
-                        ],
-                      )
+                        ),
+                      ]
                     )
                     : Container(
                       margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -132,7 +245,7 @@ class ShoopingCartScreen extends StatelessWidget {
                     MaterialButton(
                       onPressed: (){},
                       shape: RoundedRectangleBorder(
-                        side: const BorderSide( color: Colors.black12), 
+                        side: const BorderSide( color: Colors.green), 
                         borderRadius: BorderRadius.circular(8)
                       ), 
                       child: const Text('Enviar Compra'),

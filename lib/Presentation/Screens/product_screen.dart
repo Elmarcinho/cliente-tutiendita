@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:cliente_tutiendita/Model/product_model.dart';
 
 
 class ProductScreen extends StatelessWidget {
@@ -12,49 +11,47 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final ProductModel product = ModalRoute.of(context)!.settings.arguments as ProductModel;
     final size = MediaQuery.of(context).size;
 
-    return BlocBuilder<ProductBloc, ProductState>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Producto'),
-            centerTitle: true,
-            actions: [
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10 ,horizontal: 15),
-                child: badges.Badge(
-                  position: badges.BadgePosition.topEnd(top: -8, end: -4),
-                  badgeAnimation: const badges.BadgeAnimation.scale(),
-                  showBadge: true,
-                  badgeContent: const Text('7', style: TextStyle(color: Colors.white),),
-                  child: IconButton(
-                    icon: const Icon(Icons.shopping_cart_outlined, size: 27.0,), 
-                    onPressed: () {}
-                  ),
-                ),
-              )
-            ],
-          ),
-          body: ListView(
-            children: [
-              const SizedBox( height: 40),
-              Center(
-                child: SizedBox(
-                  height: size.height * 0.35,
-                  width: size.width * 0.75,
-                  child: _ImageGallery(
-                    image: state.product!.image,
-                  ),
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Producto'),
+        centerTitle: true,
+        actions: [
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 10 ,horizontal: 15),
+            child: badges.Badge(
+              position: badges.BadgePosition.topEnd(top: -8, end: -4),
+              badgeAnimation: const badges.BadgeAnimation.scale(),
+              showBadge: true,
+              badgeContent: const Text('7', style: TextStyle(color: Colors.white),),
+              child: IconButton(
+                icon: const Icon(Icons.shopping_cart_outlined, size: 27.0,), 
+                onPressed: () {}
               ),
-              const SizedBox( height: 100),
-
-              _ProductoInformation(state: state)
-            ],
+            ),
           )
-        );
-      },
+        ],
+      ),
+      body: ListView(
+        children: [
+          const SizedBox( height: 40),
+          Center(
+            child: SizedBox(
+              height: size.height * 0.35,
+              width: size.width * 0.75,
+              child: _ImageGallery(
+                image: product.image,
+              ),
+            ),
+          ),
+          const SizedBox( height: 100),
+    
+          _ProductoInformation(product: product,)
+        ],
+      )
     );
   }
 }
@@ -93,12 +90,12 @@ class _ImageGallery extends StatelessWidget {
 }
 
 class _ProductoInformation extends StatelessWidget {
-  final ProductState state;
-   const _ProductoInformation({required this.state});
+  final ProductModel product;
+   const _ProductoInformation({required this.product});
 
   @override
   Widget build(BuildContext context) {
-    //final productBloc = context.watch<ProductBloc>();
+
     return Column(
             children: [
           
@@ -112,7 +109,7 @@ class _ProductoInformation extends StatelessWidget {
 
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: Text('${state.product!.title} ${state.product!.description1} ${state.product!.description2}', 
+                      child: Text('${product.title} ${product.description1} ${product.description2}', 
                         style: GoogleFonts.lato(
                         decoration: TextDecoration.none, 
                         fontSize: 20
@@ -206,7 +203,7 @@ class _ProductoInformation extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(state.product == null ? '' :  'Bs. ${state.product!.price.toString()}'),
+                        Text('Bs. ${product.price.toString()}'),
                         const Text('0'),
                         const Text('10')
                       ],

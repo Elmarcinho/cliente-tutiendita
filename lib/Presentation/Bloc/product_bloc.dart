@@ -21,10 +21,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc(this.productProvider, this.categoryProvider) : super(const ProductState()) {
 
     on<GetProductsEvent>( _onGetProducts);
-    on<ProductoEvent>( _onProducto);
     on<OnSearchProduct>( _onSearchProduct);
     on<AddProductShoopingCartEvent>( _addProductShoopingCart);
     on<OnQuantityUpdate>( _onQuantityUpdate);
+    on<OnVisibility>( _onVisibility);
+    on<DeleteProductShoopingCartEvent>( _deleteProductShoopingCartEvent);
     on<OnTitleQuery>( _onTitleQuery);
     on<OnResetQuery>( _onResetQuery);
     on<OnUltimoQuery>( _onUltimoQuery);
@@ -43,17 +44,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
   }
 
-  void _onProducto( ProductoEvent event, Emitter emit){
-    
-    emit(
-      state.copyWith(
-        product: event.product
-      )
-    );
-  }
-
-  void _onSearchProduct( OnSearchProduct event, Emitter emit) async{
-    
+  void _onSearchProduct( OnSearchProduct event, Emitter emit){
     
     final query =  state.listProduct.where((element) => element.title.contains( event.query)).toList();
    
@@ -72,7 +63,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         state.copyWith(
           quantity: state.quantity + event.product.quantity,
           listProductShoopingCart  : List<ProductModel>.from(state.listProductShoopingCart)..add(event.product),
-          
         ),
       );
       emit(
@@ -83,26 +73,47 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-  void _onQuantityUpdate( OnQuantityUpdate event, Emitter emit) async{
+  void _onQuantityUpdate( OnQuantityUpdate event, Emitter emit){
     
-    //int total = 0;
-    // for (int i = 0; i < state.listProductShoopingCart.length ; i++){
-    //    total = total + state.listProductShoopingCart[i].quantity;
-    // }
+    final quantity = state.listProductShoopingCart.fold<int>( 0, (previousValue, element) => previousValue + element.quantity);
+    final listUpdate = List<ProductModel>.from(state.listProduct.map((e) => e.id == event.product.id? event.product : e));
+    final total = state.listProductShoopingCart.fold<double>( 0.0, (previousValue, element) => previousValue + (element.quantity * element.price));
+
     emit(
       state.copyWith( 
-        quantity: state.listProductShoopingCart.fold<int>( 0, (previousValue, element) => previousValue + element.quantity),
-        listProduct: state.listProduct.map((e) => e.id == event.product.id? event.product : e).toList(),
-      )
-    );
-    emit(
-      state.copyWith(
-        total: state.listProductShoopingCart.fold<double>( 0.0, (previousValue, element) => previousValue + (element.quantity * element.price)),
+        quantity: quantity,
+        listProduct: listUpdate,
+        total: total
       )
     );
   }
 
-  void _onTitleQuery( OnTitleQuery event, Emitter emit) async{
+  void _onVisibility( OnVisibility event, Emitter emit ){
+
+    final listUpdate = List<ProductModel>.from(state.listProduct.map((e) => e.id == event.product.id? event.product : e));
+
+    emit(
+      state.copyWith(
+        listProduct: listUpdate
+      )
+    );
+  }
+
+  void _deleteProductShoopingCartEvent( DeleteProductShoopingCartEvent event, Emitter emit){
+
+    state.listProductShoopingCart.removeAt(event.index);
+
+    final total = state.listProductShoopingCart.fold<double>( 0.0, (previousValue, element) => previousValue + (element.quantity * element.price));
+
+    emit(
+      state.copyWith(
+        quantity: state.quantity - event.product.quantity,
+        total: total
+      )
+    );
+  }
+
+  void _onTitleQuery( OnTitleQuery event, Emitter emit){
 
     final titleQuery = TitleQuery.dirty(event.titleQuery);
     
@@ -115,7 +126,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   }
 
-  void _onUltimoQuery( OnUltimoQuery event, Emitter emit) async{
+  void _onUltimoQuery( OnUltimoQuery event, Emitter emit){
     
     emit( 
       state.copyWith(
@@ -125,7 +136,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   }
 
-  void _onResetQuery ( OnResetQuery event, Emitter emit) async{
+  void _onResetQuery ( OnResetQuery event, Emitter emit){
     emit(
       state.copyWith(
         titleQuery: const TitleQuery.dirty('')

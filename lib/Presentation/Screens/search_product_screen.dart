@@ -77,7 +77,7 @@ class SearchProductScreen extends StatelessWidget {
     );
   }
 
-  Widget _crearItem(BuildContext context, ProductModel producto) {
+  Widget _crearItem(BuildContext context, ProductModel product) {
     
     return Stack(
       children: [
@@ -93,7 +93,7 @@ class SearchProductScreen extends StatelessWidget {
                   SizedBox(
                     height: 80.0,
                     width: double.infinity,
-                    child: (producto.image.isEmpty)
+                    child: (product.image.isEmpty)
                         ? Image.asset('assets/no-image.jpg')
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
@@ -103,7 +103,7 @@ class SearchProductScreen extends StatelessWidget {
                               height: 100.0,
                               width: double.infinity,
                               fit: BoxFit.cover,
-                              image: NetworkImage(producto.image),
+                              image: NetworkImage(product.image),
                             )
                         ),
                   ),
@@ -113,27 +113,27 @@ class SearchProductScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      'Bs. ${producto.price}',
+                      'Bs. ${product.price}',
                       style: const TextStyle( fontSize: 15, fontWeight: FontWeight.bold)
                     )
                   ),
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      '${producto.title[0].toUpperCase()}${producto.title.substring(1)}',
+                      '${product.title[0].toUpperCase()}${product.title.substring(1)}',
                       style: const TextStyle(fontSize: 12)
                     )
                   ),
                   SizedBox(
                     width: double.infinity, 
-                    child: Text(producto.description1,
+                    child: Text(product.description1,
                       style: const TextStyle(fontSize: 12)
                     )
                   ),
                   Expanded(
                     child: SizedBox(
                       width: double.infinity, 
-                      child: Text(producto.description2,
+                      child: Text(product.description2,
                         style: const TextStyle(fontSize: 12)
                       )
                     ),
@@ -142,8 +142,7 @@ class SearchProductScreen extends StatelessWidget {
               ),
             ),
             onTap: () {
-              context.read<ProductBloc>().add(ProductoEvent(producto));
-              Navigator.pushNamed(context, 'product');
+              Navigator.pushNamed(context, 'product', arguments: product );
             },
           ),
         ),

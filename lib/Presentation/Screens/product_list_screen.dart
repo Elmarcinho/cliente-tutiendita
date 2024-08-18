@@ -54,7 +54,7 @@ class _ProductListSreenState extends State<ProductListSreen> {
                 ),
                 itemCount: state.listProduct.length,
                 itemBuilder: (contex, i) =>
-                  _crearItem(context, state.listProduct[i]),
+                  _crearItem(context, state.listProduct[i], i),
               ),
             ),
           ],
@@ -63,7 +63,7 @@ class _ProductListSreenState extends State<ProductListSreen> {
     );
   }
 
-  Widget _crearItem(BuildContext context, ProductModel product) {
+  Widget _crearItem(BuildContext context, ProductModel product, int index) {
     
     return Stack(
       children: [
@@ -128,8 +128,7 @@ class _ProductListSreenState extends State<ProductListSreen> {
               ),
             ),
             onTap: () {
-              context.read<ProductBloc>().add(ProductoEvent(product));
-              Navigator.pushNamed(context, 'product');
+              Navigator.pushNamed(context, 'product', arguments: product );
             },
           ),
         ),
@@ -153,13 +152,14 @@ class _ProductListSreenState extends State<ProductListSreen> {
                 setState(() {
                   product.visible = true;
                   product.clic = true;
+                  context.read<ProductBloc>().add(OnVisibility(product));
                   context.read<ProductBloc>().add(AddProductShoopingCartEvent(product));
                 });
-                Future.delayed(Duration(seconds: product.seconds), (){
+                Future.delayed(const Duration(seconds: 3), (){
                   if (mounted){
                     setState(() {
                       product.visible = false;
-                      context.read<ProductBloc>().add(AddProductShoopingCartEvent(product));
+                      context.read<ProductBloc>().add(OnVisibility(product));
                     }); 
                   }else{
                     product.visible = false;
@@ -193,18 +193,18 @@ class _ProductListSreenState extends State<ProductListSreen> {
                         IconButton(
                           icon: const Icon(Icons.remove_circle_outline, size: 30),
                           color: const Color.fromARGB(255, 74, 224, 79), 
-                        onPressed: (){
-                          setState(() {
+                          onPressed: (){
+           
                             if(product.quantity > 1 ){
                               product.quantity--;
-                              product.seconds = product.seconds++;
                               context.read<ProductBloc>().add(OnQuantityUpdate(product));
                             }else{
-                              //*Quitar de carrito de compras
+                              product.visible = false;
+                              product.clic = false;
+                              context.read<ProductBloc>().add(OnVisibility(product));
+                              context.read<ProductBloc>().add(DeleteProductShoopingCartEvent(product, index));
                             }
-                            
-                          });
-                        }
+                          }
                         ),
                         SizedBox(
                           width: 20,
@@ -218,11 +218,10 @@ class _ProductListSreenState extends State<ProductListSreen> {
                           icon: const Icon(Icons.add_circle_outline, size: 30),
                           color: const Color.fromARGB(255, 74, 224, 79), 
                           onPressed: (){
-                            setState(() {
-                              product.quantity++;
-                              product.seconds = product.seconds++;
-                              context.read<ProductBloc>().add(OnQuantityUpdate(product));
-                            });
+
+                            product.quantity++;
+                            context.read<ProductBloc>().add(OnQuantityUpdate(product));
+                          
                           }
                         ),
                       ],

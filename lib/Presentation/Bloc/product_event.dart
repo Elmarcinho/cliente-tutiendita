@@ -7,14 +7,9 @@ class ProductEvent extends Equatable {
   List<Object> get props => [];
 }
 
-//*Eventos para obtener data
+
 class GetProductsEvent extends ProductEvent{ 
   const GetProductsEvent();
-}
-
-class ProductoEvent extends ProductEvent{ 
-  final ProductModel product;
-  const ProductoEvent(this.product);
 }
 
 class OnSearchProduct extends ProductEvent{
@@ -30,6 +25,17 @@ class AddProductShoopingCartEvent extends ProductEvent{
 class OnQuantityUpdate extends ProductEvent{
   final ProductModel product;
   const OnQuantityUpdate(this.product);
+}
+
+class OnVisibility extends ProductEvent{
+  final ProductModel product;
+  const OnVisibility(this.product);
+}
+
+class DeleteProductShoopingCartEvent extends ProductEvent{
+  final ProductModel product;
+  final int index;
+  const DeleteProductShoopingCartEvent(this.product, this.index);
 }
 
 class OnResetQuery extends ProductEvent{ }
