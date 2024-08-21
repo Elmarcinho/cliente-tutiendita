@@ -128,7 +128,7 @@ class _ProductListSreenState extends State<ProductListSreen> {
               ),
             ),
             onTap: () {
-              Navigator.pushNamed(context, 'product', arguments: product );
+              Navigator.pushNamed(context, 'product', arguments: index);
             },
           ),
         ),
@@ -149,13 +149,18 @@ class _ProductListSreenState extends State<ProductListSreen> {
                 ? Text(product.quantity.toString(), style: const TextStyle( color: Colors.white), ) 
                 : const Icon(Icons.add, color: Color.fromARGB(255, 74, 224, 79)),
               onPressed: (){
+
                 setState(() {
                   product.visible = true;
                   product.clic = true;
                   context.read<ProductBloc>().add(OnVisibility(product));
-                  context.read<ProductBloc>().add(AddProductShoopingCartEvent(product));
+                  if(product.quantity == 0){
+                    product.quantity++;
+                    context.read<ProductBloc>().add(OnQuantityUpdate(product));
+                    context.read<ProductBloc>().add(AddProductShoopingCartEvent(product));
+                  }
                 });
-                Future.delayed(const Duration(seconds: 3), (){
+                Future.delayed(const Duration(seconds: 2), (){
                   if (mounted){
                     setState(() {
                       product.visible = false;

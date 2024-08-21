@@ -102,13 +102,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   void _deleteProductShoopingCartEvent( DeleteProductShoopingCartEvent event, Emitter emit){
 
     state.listProductShoopingCart.removeAt(event.index);
-
     final total = state.listProductShoopingCart.fold<double>( 0.0, (previousValue, element) => previousValue + (element.quantity * element.price));
+    event.product.quantity = 0;
+    final listUpdate = List<ProductModel>.from(state.listProduct.map((e) => e.id == event.product.id? event.product : e));
 
     emit(
       state.copyWith(
         quantity: state.quantity - event.product.quantity,
-        total: total
+        total: total,
+        listProduct: listUpdate
       )
     );
   }

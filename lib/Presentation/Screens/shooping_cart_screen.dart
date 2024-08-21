@@ -82,7 +82,7 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                                       context.read<ProductBloc>().add(OnVisibility(state.listProductShoopingCart[index]));
                                       context.read<ProductBloc>().add(AddProductShoopingCartEvent(state.listProductShoopingCart[index]));
                                     });
-                                    Future.delayed(const Duration(seconds: 3), (){
+                                    Future.delayed(const Duration(seconds: 2), (){
                                       if (mounted){
                                         setState(() {
                                           state.listProductShoopingCart[index].visible = false;
@@ -129,7 +129,7 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                                         }, 
                                       ),
                                       TextButton(
-                                        child: const Text('Si, borrar'),
+                                        child: const Text('Si borrar'),
                                         onPressed: (){
                                           state.listProductShoopingCart[index].visible = false;
                                           state.listProductShoopingCart[index].clic = false;
@@ -178,11 +178,6 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                                             if(state.listProductShoopingCart[index].quantity > 1 ){
                                               state.listProductShoopingCart[index].quantity--;
                                               context.read<ProductBloc>().add(OnQuantityUpdate(state.listProductShoopingCart[index]));
-                                            }else{
-                                              state.listProductShoopingCart[index].visible = false;
-                                              state.listProductShoopingCart[index].clic = false;
-                                              context.read<ProductBloc>().add(OnVisibility(state.listProductShoopingCart[index]));
-                                              context.read<ProductBloc>().add(DeleteProductShoopingCartEvent(state.listProductShoopingCart[index], index));
                                             }
                                           }
                                         ),
