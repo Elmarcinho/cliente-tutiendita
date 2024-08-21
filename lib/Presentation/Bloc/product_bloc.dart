@@ -1,13 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:formz/formz.dart';
 
-import 'package:cliente_tutiendita/Negocio/validation/validation.dart';
 import 'package:cliente_tutiendita/Model/product_model.dart';
 import 'package:cliente_tutiendita/Provider/category_provider.dart';
 import 'package:cliente_tutiendita/Provider/product_provider.dart';
 
-
+import '../Screens/screen.dart';
 
 
 part 'product_event.dart';
@@ -28,7 +26,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<DeleteProductShoopingCartEvent>( _deleteProductShoopingCartEvent);
     on<OnTitleQuery>( _onTitleQuery);
     on<OnResetQuery>( _onResetQuery);
-    on<OnUltimoQuery>( _onUltimoQuery);
+    on<OnSelectNavigationBar>( _onSelectNavigationBar);
 
   }
 
@@ -103,12 +101,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     state.listProductShoopingCart.removeAt(event.index);
     final total = state.listProductShoopingCart.fold<double>( 0.0, (previousValue, element) => previousValue + (element.quantity * element.price));
+    final quantity = state.quantity - event.product.quantity;
     event.product.quantity = 0;
     final listUpdate = List<ProductModel>.from(state.listProduct.map((e) => e.id == event.product.id? event.product : e));
 
     emit(
       state.copyWith(
-        quantity: state.quantity - event.product.quantity,
+        quantity: quantity,
         total: total,
         listProduct: listUpdate
       )
@@ -117,31 +116,30 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   void _onTitleQuery( OnTitleQuery event, Emitter emit){
 
-    final titleQuery = TitleQuery.dirty(event.titleQuery);
+    final titleQuery = event.titleQuery;
     
     emit( 
       state.copyWith(
         titleQuery: titleQuery,
-        isFormValid: Formz.validate([titleQuery])
-      )
-    );
-
-  }
-
-  void _onUltimoQuery( OnUltimoQuery event, Emitter emit){
-    
-    emit( 
-      state.copyWith(
-        titleQuery: TitleQuery.dirty(event.ultimoQuery)
       )
     );
 
   }
 
   void _onResetQuery ( OnResetQuery event, Emitter emit){
+    
     emit(
       state.copyWith(
-        titleQuery: const TitleQuery.dirty('')
+        titleQuery: '',
+      )
+    );
+  }
+
+  void _onSelectNavigationBar ( OnSelectNavigationBar event, Emitter emit){
+
+    emit(
+      state.copyWith(
+        selectIndex: event.index
       )
     );
   }

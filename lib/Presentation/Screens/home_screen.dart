@@ -5,26 +5,12 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-import 'package:cliente_tutiendita/Presentation/Screens/screen.dart';
 import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
 import 'package:cliente_tutiendita/Presentation/Widgets/widgets.dart';
 import 'package:cliente_tutiendita/Services/services.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int selectIndex = 1;
-  String title = '';
-  List screens = [
-    const SearchProductScreen(),
-    const ProductListSreen(),
-    const ShoopingCartScreen()
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
         return Scaffold(
           drawer: const SideMenu(),
           appBar: AppBar(
-            title: Text(title),
+            title: Text(
+              state.selectIndex == 0
+              ? 'Busqueda'
+              : (state.selectIndex == 2? 'Mi carrito' : '')
+            ),
             centerTitle: true,
             actions: [
               IconButton(
@@ -55,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return CurvedNavigationBar(
                 height: 60,
                 backgroundColor: Colors.brown,
-                index: selectIndex,
+                index: state.selectIndex,
                 items: [
                   const Icon(Icons.search, size: 30),
                   const Icon(Icons.home, size: 30),
@@ -70,16 +60,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       child:
                           const Icon(Icons.shopping_cart_outlined, size: 30)),
                 ],
-                onTap: (index) => setState(() {
-                  selectIndex = index;
-                  index == 0
-                      ? title = 'Búsqueda'
-                      : (index == 2 ? title = 'Mi carrito' : title = '');
-                }),
+                onTap: (index) => context.read<ProductBloc>().add(OnSelectNavigationBar(index))
               );
             },
           ),
-          body: screens[selectIndex],
+          body: state.screens[state.selectIndex],
         );
       },
     );

@@ -7,8 +7,14 @@ import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
 
 
 
-class SearchProductScreen extends StatelessWidget {
+class SearchProductScreen extends StatefulWidget {
   const SearchProductScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SearchProductScreen> createState() => _SearchProductScreenState();
+}
+
+class _SearchProductScreenState extends State<SearchProductScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +23,9 @@ class SearchProductScreen extends StatelessWidget {
 
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
+
+        queryController.text = state.titleQuery;
+
         return Column(
           children: [
             Container(
@@ -37,16 +46,15 @@ class SearchProductScreen extends StatelessWidget {
                   hintStyle: const TextStyle( fontWeight: FontWeight.normal),
                   prefixIcon: IconButton(
                     onPressed: (){
-                      context.read<ProductBloc>().add(OnSearchProduct(state.titleQuery.value.toLowerCase()));
+                      context.read<ProductBloc>().add(OnSearchProduct(state.titleQuery.toLowerCase()));
                     }, 
                     icon: const Icon(Icons.search_outlined)
                   ),
                   suffixIcon: FadeIn(
-                    animate: state.titleQuery.value.isNotEmpty,
+                    animate: state.titleQuery.isNotEmpty,
                     child: IconButton(
                       onPressed: (){
                         context.read<ProductBloc>().add(OnResetQuery());
-                        queryController.text = '';
                       }, 
                       icon: const Icon(Icons.clear_outlined)
                     ),
@@ -59,7 +67,9 @@ class SearchProductScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: GridView.builder(
+              child: state.listProductRepository.isEmpty
+                ? const Center(child: Text('No encontramos resultados'))
+                : GridView.builder(
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
@@ -67,8 +77,7 @@ class SearchProductScreen extends StatelessWidget {
                   crossAxisSpacing: 2,
                 ),
                 itemCount: state.listProductRepository.length,
-                itemBuilder: (contex, i) =>
-                    _crearItem(context, state.listProductRepository[i]),
+                itemBuilder: (contex, i) => _crearItem(context, state.listProductRepository[i], i)
               ),
             ),
           ],
@@ -77,7 +86,7 @@ class SearchProductScreen extends StatelessWidget {
     );
   }
 
-  Widget _crearItem(BuildContext context, ProductModel product) {
+  Widget _crearItem(BuildContext context, ProductModel product, int index) {
     
     return Stack(
       children: [
@@ -142,7 +151,7 @@ class SearchProductScreen extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.pushNamed(context, 'product', arguments: product );
+              Navigator.pushNamed(context, 'product', arguments: index );
             },
           ),
         ),
@@ -155,12 +164,99 @@ class SearchProductScreen extends StatelessWidget {
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
                 side: const BorderSide( width: 2, color: Color.fromARGB(255, 74, 224, 79)),
-                backgroundColor: Colors.transparent,
+                backgroundColor: product.clic? const Color.fromARGB(255, 74, 224, 79) :Colors.transparent,
                 shape: const CircleBorder(),
               padding: const EdgeInsets.all(2),          
               ),
-              child: const Icon(Icons.add, color: Color.fromARGB(255, 74, 224, 79)),
-              onPressed: (){},
+              child: product.clic
+                ? Text(product.quantity.toString(), style: const TextStyle( color: Colors.white), ) 
+                : const Icon(Icons.add, color: Color.fromARGB(255, 74, 224, 79)),
+              onPressed: (){
+
+                setState(() {
+                  product.visible = true;
+                  product.clic = true;
+                  context.read<ProductBloc>().add(OnVisibility(product));
+                  if(product.quantity == 0){
+                    product.quantity++;
+                    context.read<ProductBloc>().add(OnQuantityUpdate(product));
+                    context.read<ProductBloc>().add(AddProductShoopingCartEvent(product));
+                  }
+                });
+                Future.delayed(const Duration(seconds: 2), (){
+                  if (mounted){
+                    setState(() {
+                      product.visible = false;
+                      context.read<ProductBloc>().add(OnVisibility(product));
+                    }); 
+                  }else{
+                    product.visible = false;
+                  }                  
+                });
+              },
+            ),
+          ),
+        ),
+
+        Visibility(
+          visible: product.visible,
+          child: Positioned(
+            right: 7,
+            child: Container(
+              height: 38,
+              width: 108,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all( color: const Color.fromARGB(255, 74, 224, 79)),
+                borderRadius: BorderRadius.circular(5)
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: -6,
+                    right: -5,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.remove_circle_outline, size: 30),
+                          color: const Color.fromARGB(255, 74, 224, 79), 
+                          onPressed: (){
+           
+                            if(product.quantity > 1 ){
+                              product.quantity--;
+                              context.read<ProductBloc>().add(OnQuantityUpdate(product));
+                            }else{
+                              product.visible = false;
+                              product.clic = false;
+                              context.read<ProductBloc>().add(OnVisibility(product));
+                              context.read<ProductBloc>().add(DeleteProductShoopingCartEvent(product, index));
+                            }
+                          }
+                        ),
+                        SizedBox(
+                          width: 20,
+                          child: Center(
+                            child: Text( product.quantity.toString(), 
+                              style: const TextStyle(fontSize: 15.0)
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.add_circle_outline, size: 30),
+                          color: const Color.fromARGB(255, 74, 224, 79), 
+                          onPressed: (){
+
+                            product.quantity++;
+                            context.read<ProductBloc>().add(OnQuantityUpdate(product));
+                          
+                          }
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),  
             ),
           ),
         ),

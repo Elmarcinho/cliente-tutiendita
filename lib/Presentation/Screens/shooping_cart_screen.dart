@@ -120,7 +120,7 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                                 onPressed: (){
                         
                                   final dialog = AlertDialog(
-                                    title: const Text('¿Esta seguro de quitar el producto del carrito?'),
+                                    title: const Text('¿Esta seguro de quitar el producto del carrito?', style: TextStyle(fontSize: 16)),
                                     actions: [
                                       TextButton(
                                         child: const Text('No'),

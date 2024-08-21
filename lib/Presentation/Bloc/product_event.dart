@@ -17,6 +17,11 @@ class OnSearchProduct extends ProductEvent{
   const OnSearchProduct(this.query);
 }
 
+class OnSelectNavigationBar extends ProductEvent{
+  final int index;
+  const OnSelectNavigationBar(this.index);
+}
+
 class AddProductShoopingCartEvent extends ProductEvent{
   final ProductModel product;
   const AddProductShoopingCartEvent(this.product);

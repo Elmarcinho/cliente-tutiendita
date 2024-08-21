@@ -2,47 +2,49 @@ part of 'product_bloc.dart';
 
 class ProductState extends Equatable {
 
-  final bool formStatus;
-  final bool isFormValid;
   final bool isEnabled;
-  
   final List<ProductModel> listProduct;
   final List<ProductModel> listProductRepository;
   final List<ProductModel> listProductShoopingCart;
   final bool isCreate;
-  final TitleQuery titleQuery;
+  final String titleQuery;
   final int quantity;
   final double total;
+  final int selectIndex;
+  final List screens;
 
   const ProductState({
-    this.formStatus = false,
-    this.isFormValid = false,
     this.isEnabled = false,
     this.listProduct= const [],
     this.listProductRepository= const [],
     this.listProductShoopingCart= const [],
     this.isCreate = false,
-    this.titleQuery = const TitleQuery.dirty(''),
+    this.titleQuery = '',
     this.quantity = 0,
-    this.total = 0.0
+    this.total = 0.0,
+    this.selectIndex = 1,
+    this.screens = const [
+      SearchProductScreen(),
+      ProductListSreen(),
+      ShoopingCartScreen()
+    ]
   });
 
   ProductState copyWith({
-    bool? formStatus,
-    bool? isFormValid,
+    bool? autoFocus,
     bool? isEnabled,
     ProductModel?  product,
     List<ProductModel>? listProduct,
     List<ProductModel>? listProductRepository,
     List<ProductModel>? listProductShoopingCart,
     bool? isCreate,
-    TitleQuery? titleQuery,
+    String? titleQuery,
     int? quantity,
-    double? total
+    double? total,
+    int? selectIndex,
+    List? screens
 
   }) => ProductState(
-    formStatus: formStatus ?? this.formStatus,
-    isFormValid: isFormValid ?? this.isFormValid,
     isEnabled: isEnabled ?? this.isEnabled,
     listProduct: listProduct ?? this.listProduct,
     listProductRepository: listProductRepository ?? this.listProductRepository,
@@ -50,12 +52,15 @@ class ProductState extends Equatable {
     isCreate: isCreate ?? this.isCreate,
     titleQuery: titleQuery ?? this.titleQuery,
     quantity: quantity ?? this.quantity,
-    total: total ?? this.total
+    total: total ?? this.total,
+    selectIndex: selectIndex ?? this.selectIndex,
+    screens: screens ?? this.screens
   );
   
   @override
-  List<Object> get props => [formStatus, isFormValid, isEnabled, listProduct, listProductRepository,
-                              listProductShoopingCart, isCreate, titleQuery, quantity, total];
+  List<Object> get props => [isEnabled, listProduct, listProductRepository,
+                              listProductShoopingCart, isCreate, titleQuery, quantity, 
+                              total, selectIndex, screens];
 }
 
 

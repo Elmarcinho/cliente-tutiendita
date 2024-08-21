@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:cliente_tutiendita/Model/product_model.dart';
+import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
 
 class ProductScreen extends StatelessWidget {
   const ProductScreen({Key? key}) : super(key: key);
@@ -28,17 +28,21 @@ class ProductScreen extends StatelessWidget {
                   child: badges.Badge(
                     position: badges.BadgePosition.topEnd(top: -8, end: -4),
                     badgeAnimation: const badges.BadgeAnimation.scale(),
-                    showBadge: true,
+                    showBadge: state.quantity != 0 ? true : false,
                     badgeContent: Text(
                       state.quantity.toString(),
                       style: const TextStyle(color: Colors.white),
                     ),
                     child: IconButton(
-                        icon: const Icon(
-                          Icons.shopping_cart_outlined,
+                      icon: const Icon(
+                        Icons.shopping_cart_outlined,
                           size: 27.0,
-                        ),
-                        onPressed: () {}),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        context.read<ProductBloc>().add(const OnSelectNavigationBar(2));
+                      }
+                    ),
                   ),
                 )
               ],
@@ -144,27 +148,15 @@ class _ProductoInformation extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 15),
-                    SizedBox(
+                    Container(
                       height: 35,
                       width: 70,
-                      child: TextFormField(
-                        initialValue: product.quantity.toString(),
-                        textAlign: TextAlign.center,
-                        textAlignVertical: TextAlignVertical.top,
-                        style: const TextStyle(fontSize: 16),
-                        keyboardType:
-                            const TextInputType.numberWithOptions(signed: true),
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    const BorderSide(color: Colors.white)),
-                            focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black)),
-                            isDense: true,
-                            filled: true,
-                            fillColor: Colors.white),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(5)
                       ),
+                      child: Center(child: Text(product.quantity.toString(), style: const TextStyle(fontSize: 16),))
                     ),
                     const SizedBox(width: 15),
                     SizedBox(
@@ -205,22 +197,26 @@ class _ProductoInformation extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      SizedBox(width: 20),
                       Text('Precio por Und',
                           style: TextStyle(fontWeight: FontWeight.bold)),
+                      SizedBox(width: 45),
                       Text('Cantidad',
                           style: TextStyle(fontWeight: FontWeight.bold)),
+                      SizedBox(width: 70),
                       Text('Total',
                           style: TextStyle(fontWeight: FontWeight.bold))
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      const SizedBox(width: 40),
                       Text('Bs. ${product.price.toString()}'),
-                      const Text('0'),
-                      const Text('10')
+                      const SizedBox(width: 80),
+                      Text(product.quantity.toString()),
+                      const SizedBox(width: 80),
+                      Text('Bs. ${(product.price * product.quantity).toStringAsFixed(2)}')
                     ],
                   ),
                 ],
