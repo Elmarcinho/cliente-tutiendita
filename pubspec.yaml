@@ -26,6 +26,7 @@ dependencies:
   formz: ^0.7.0
   google_fonts: ^6.2.1
   google_sign_in: ^6.2.1
+  intl: ^0.18.1
   shared_preferences: ^2.2.3
   step_progress_indicator: ^1.0.2
   url_launcher: ^6.1.11

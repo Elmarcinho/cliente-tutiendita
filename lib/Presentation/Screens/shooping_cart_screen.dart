@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
+
+import '../../Services/services.dart';
 
 
 class ShoopingCartScreen extends StatefulWidget {
@@ -12,6 +15,11 @@ class ShoopingCartScreen extends StatefulWidget {
 }
 
 class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
+
+  final prefs = UserPreferencia();
+  DateTime fecha = DateTime.now();
+  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+
   @override
   Widget build(BuildContext context) {
     
@@ -238,7 +246,24 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                     Text(state.total.toStringAsFixed(2), style: const TextStyle( fontSize: 20, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     MaterialButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        String pedido = '';
+                        pedido = '🛒${pedido}Pedido: 1 \n';
+                        pedido = '${pedido}Fecha: ${dateFormat.format(fecha)} \n';
+                        pedido = '${pedido}Cliente: ${prefs.nombreUsuario} \n';
+
+                        for( int i = 0; i < state.listProductShoopingCart.length; i++){
+                          pedido = '$pedido'
+                          '\n*${state.listProductShoopingCart[i].title} ${state.listProductShoopingCart[i].description1}* ${state.listProductShoopingCart[i].description2}'
+                          '\nCantidad: *${state.listProductShoopingCart[i].quantity}*'
+                          '\nPrecio: ${state.listProductShoopingCart[i].price}'
+                          '\n___________________________';
+                        }
+                        pedido = '$pedido\n';
+                        pedido = '$pedido\n*TOTAL: ${state.total.toStringAsFixed(2)}*';
+
+                        WhatsAppService.launchWhatsAppString(pedido);
+                      },
                       shape: RoundedRectangleBorder(
                         side: const BorderSide( color: Colors.green), 
                         borderRadius: BorderRadius.circular(8)
