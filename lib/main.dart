@@ -56,6 +56,7 @@ class MainApp extends StatelessWidget {
           'registerClient' : ( context ) => const RegisterCliente(),
           'product'        : ( context ) => const ProductScreen(),
           'productlist'    : ( context ) => const ProductListSreen(),
+          'categoryProducts':( context ) => const CategoryProducts()
         },
         supportedLocales: const [Locale("es")],
         localizationsDelegates: const [

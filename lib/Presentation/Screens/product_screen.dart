@@ -12,59 +12,64 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final index = ModalRoute.of(context)!.settings.arguments as int;
+    final product = ModalRoute.of(context)!.settings.arguments as ProductModel;
     final size = MediaQuery.of(context).size;
 
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         return Scaffold(
-            appBar: AppBar(
-              title: const Text('Producto'),
-              centerTitle: true,
-              actions: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  child: badges.Badge(
-                    position: badges.BadgePosition.topEnd(top: -8, end: -4),
-                    badgeAnimation: const badges.BadgeAnimation.scale(),
-                    showBadge: state.quantity != 0 ? true : false,
-                    badgeContent: Text(
-                      state.quantity.toString(),
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.shopping_cart_outlined,
-                          size: 27.0,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        context.read<ProductBloc>().add(const OnSelectNavigationBar(2));
-                      }
-                    ),
-                  ),
-                )
-              ],
-            ),
-            body: ListView(
-              children: [
-                const SizedBox(height: 40),
-                Center(
-                  child: SizedBox(
-                    height: size.height * 0.35,
-                    width: size.width * 0.75,
-                    child: _ImageGallery(
-                      image: state.listProduct[index].image,
-                    ),
-                  ),
+        appBar: AppBar(
+          title: const Text('Producto'),
+          centerTitle: true,
+          actions: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              child: badges.Badge(
+                position: badges.BadgePosition.topEnd(top: -8, end: -4),
+                badgeAnimation: const badges.BadgeAnimation.scale(),
+                showBadge: state.quantity != 0 ? true : false,
+                badgeContent: Text(
+                  state.quantity.toString(),
+                  style: const TextStyle(color: Colors.white),
                 ),
-                const SizedBox(height: 100),
-                _ProductoInformation(
-                  product: state.listProduct[index],
-                )
-              ],
-            ));
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.shopping_cart_outlined,
+                      size: 27.0,
+                  ),
+                  onPressed: () {
+                    if(state.screenCategoryProduct){
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      context.read<ProductBloc>().add(const OnSelectNavigationBar(2));
+                    }else{
+                      Navigator.of(context).pop();
+                      context.read<ProductBloc>().add(const OnSelectNavigationBar(2));
+                    }
+                  }
+                ),
+              ),
+            )
+          ],
+        ),
+        body: ListView(
+          children: [
+            const SizedBox(height: 40),
+            Center(
+              child: SizedBox(
+                height: size.height * 0.35,
+                width: size.width * 0.75,
+                child: _ImageGallery(
+                  image: product.image,
+                ),
+              ),
+            ),
+            const SizedBox(height: 100),
+            _ProductoInformation(
+              product: product,
+            )
+          ],
+        ));
       },
     );
   }
@@ -171,6 +176,7 @@ class _ProductoInformation extends StatelessWidget {
                         child: const Icon(Icons.add, color: Colors.black54),
                         onPressed: () {
                           if(product.quantity == 0){
+                            product.clic = true;
                             context.read<ProductBloc>().add(AddProductShoopingCartEvent(product));
                           }
                           product.quantity++;

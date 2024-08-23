@@ -6,6 +6,8 @@ export 'package:cliente_tutiendita/Presentation/Screens/register_client_screen.d
 export 'package:cliente_tutiendita/Presentation/Screens/login_screen.dart';
 export 'package:cliente_tutiendita/Presentation/Screens/home_screen.dart';
 export 'package:cliente_tutiendita/Presentation/Screens/product_list_screen.dart';
+export 'package:cliente_tutiendita/Presentation/Screens/category_products_screen.dart';
+
 
 
 

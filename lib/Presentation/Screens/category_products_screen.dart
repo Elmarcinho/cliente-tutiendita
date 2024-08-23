@@ -1,63 +1,118 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:badges/badges.dart' as badges;
 
-import 'package:cliente_tutiendita/Presentation/Widgets/widgets.dart';
-import 'package:cliente_tutiendita/Model/product_model.dart';
 import 'package:cliente_tutiendita/Presentation/Bloc/product_bloc.dart';
+import '../../Model/product_model.dart';
 
 
-
-class ProductListSreen extends StatefulWidget {
-  const ProductListSreen({super.key});
+class CategoryProducts extends StatefulWidget {
+  const CategoryProducts({Key? key}) : super(key: key);
 
   @override
-  State<ProductListSreen> createState() => _ProductListSreenState();
+  State<CategoryProducts> createState() => _CategoryProductsState();
 }
 
-class _ProductListSreenState extends State<ProductListSreen> {
-
-
+class _CategoryProductsState extends State<CategoryProducts> {
+  
   @override
   Widget build(BuildContext context) {
 
-    final titleStyle = Theme.of(context).textTheme.titleLarge;
-    
+    final titleCategory = ModalRoute.of(context)!.settings.arguments as String;
+    final queryController = TextEditingController();
+
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
 
-        if (state.listProduct.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
-        }
+        queryController.text = state.titleQuery2;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-
-            CategoryHorizontalListview( title: 'Categorias', titleStyle: titleStyle,),
-
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              child:  Text('Productos', style: titleStyle)
-            ),
-
-            const SizedBox( height: 12),
-
-            Expanded(
-              child: GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('${titleCategory[0].toUpperCase()}${titleCategory.substring(1)}'),
+            centerTitle: true,
+            actions: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                child: badges.Badge(
+                  position: badges.BadgePosition.topEnd(top: -8, end: -4),
+                  badgeAnimation: const badges.BadgeAnimation.scale(),
+                  showBadge: state.quantity != 0 ? true : false,
+                  badgeContent: Text(
+                    state.quantity.toString(),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.shopping_cart_outlined,
+                        size: 27.0,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      context.read<ProductBloc>().add(const OnSelectNavigationBar(2));
+                    }
+                  ),
+                ),
+              )
+            ],
+          ),
+          body: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+                height: 55,
+                width: 340,
+                child: TextField(
+                  controller: queryController,
+                  textInputAction: TextInputAction.search,
+                  decoration: InputDecoration(
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius:BorderRadius.all(Radius.circular(10.0)),
+                      borderSide: BorderSide(color: Colors.green)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)
+                    ),
+                    hintText: 'Buscar producto',
+                    hintStyle: const TextStyle( fontWeight: FontWeight.normal),
+                    prefixIcon: IconButton(
+                      onPressed: (){
+                        context.read<ProductBloc>().add(OnSearchProductCategory(state.titleQuery2.toLowerCase()));
+                      }, 
+                      icon: const Icon(Icons.search_outlined)
+                    ),
+                    suffixIcon: FadeIn(
+                      animate: state.titleQuery2.isNotEmpty,
+                      child: IconButton(
+                        onPressed: (){
+                          context.read<ProductBloc>().add(OnResetQuery2());
+                        }, 
+                        icon: const Icon(Icons.clear_outlined)
+                      ),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    context.read<ProductBloc>().add(OnTitleQuery2(value));
+                  },
+                  onSubmitted: ((value) =>  context.read<ProductBloc>().add(OnSearchProductCategory(value.toLowerCase()))),
+                ),
+              ),
+              Expanded(
+                child: state.listCategoryProductsRepository.isEmpty
+                  ? const Center(child: Text('No encontramos resultados'))
+                  : GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     childAspectRatio: 0.6,
                     crossAxisSpacing: 2,
+                  ),
+                  itemCount: state.listCategoryProductsRepository.length,
+                  itemBuilder: (contex, i) => _crearItem(context, state.listCategoryProductsRepository[i])
                 ),
-                itemCount: state.listProduct.length,
-                itemBuilder: (contex, i) =>
-                  _crearItem(context, state.listProduct[i]),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -128,7 +183,9 @@ class _ProductListSreenState extends State<ProductListSreen> {
               ),
             ),
             onTap: () {
-              Navigator.pushNamed(context, 'product', arguments: product);
+              Navigator.pushNamed(context, 'product', arguments: product );
+              context.read<ProductBloc>().add(const OnScreenCategoryProduct(true));
+
             },
           ),
         ),
@@ -149,6 +206,7 @@ class _ProductListSreenState extends State<ProductListSreen> {
                 ? Text(product.quantity.toString(), style: const TextStyle( color: Colors.white), ) 
                 : const Icon(Icons.add, color: Color.fromARGB(255, 74, 224, 79)),
               onPressed: (){
+
                 setState(() {
                   product.visible = true;
                   product.clic = true;

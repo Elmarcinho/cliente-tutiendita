@@ -1,3 +1,4 @@
+import 'package:cliente_tutiendita/Model/category_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -19,13 +20,19 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc(this.productProvider, this.categoryProvider) : super(const ProductState()) {
 
     on<GetProductsEvent>( _onGetProducts);
+    on<GetCategoryProductsEvent> ( _getCategoryProducts);
     on<OnSearchProduct>( _onSearchProduct);
+    on<OnSearchProductCategory>( _onSearchProductCategory);
     on<AddProductShoopingCartEvent>( _addProductShoopingCart);
     on<OnQuantityUpdate>( _onQuantityUpdate);
     on<OnVisibility>( _onVisibility);
     on<DeleteProductShoopingCartEvent>( _deleteProductShoopingCartEvent);
     on<OnTitleQuery>( _onTitleQuery);
+    on<OnTitleQuery2>( _onTitleQuery2);
+    on<OnScreenCategoryProduct>( _onScreenCategoryProduct);
     on<OnResetQuery>( _onResetQuery);
+    on<OnResetQuery2>( _onResetQuery2);
+    on<OnResetShoopingCart>( _onResetShoopingCart);
     on<OnSelectNavigationBar>( _onSelectNavigationBar);
 
   }
@@ -42,6 +49,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
   }
 
+  void _getCategoryProducts( GetCategoryProductsEvent event, Emitter emit){
+
+    final listFilter = state.listProduct.where((element) => element.idCategory == event.category.id).toList();
+
+    emit( 
+      state.copyWith(
+        listCategoryProducts: listFilter,
+        listCategoryProductsRepository: listFilter
+      )
+    );
+  }
+
   void _onSearchProduct( OnSearchProduct event, Emitter emit){
     
     final query =  state.listProduct.where((element) => element.title.contains( event.query)).toList();
@@ -49,6 +68,17 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     emit( 
       state.copyWith(
         listProductRepository: query,
+      )
+    );
+  }
+
+  void _onSearchProductCategory( OnSearchProductCategory event, Emitter emit){
+    
+    final query =  state.listCategoryProducts.where((element) => element.title.contains( event.query)).toList();
+   
+    emit( 
+      state.copyWith(
+        listCategoryProductsRepository: query,
       )
     );
   }
@@ -99,7 +129,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   void _deleteProductShoopingCartEvent( DeleteProductShoopingCartEvent event, Emitter emit){
 
-    state.listProductShoopingCart.removeAt(event.index);
+    state.listProductShoopingCart.removeWhere((element) => element.id == event.product.id);
     final total = state.listProductShoopingCart.fold<double>( 0.0, (previousValue, element) => previousValue + (element.quantity * element.price));
     final quantity = state.quantity - event.product.quantity;
     event.product.quantity = 0;
@@ -126,7 +156,39 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   }
 
-  void _onResetQuery ( OnResetQuery event, Emitter emit){
+    void _onTitleQuery2( OnTitleQuery2 event, Emitter emit){
+
+    final titleQuery2 = event.titleQuery2;
+    
+    emit( 
+      state.copyWith(
+        titleQuery2: titleQuery2,
+      )
+    );
+  }
+
+  void _onScreenCategoryProduct( OnScreenCategoryProduct event, Emitter emit){
+
+    emit(
+      state.copyWith(
+        screenCategoryProduct: event.semaforo
+      )
+    );
+  }
+
+  void _onResetShoopingCart( OnResetShoopingCart event, Emitter emit){
+    
+    emit(
+      state.copyWith(
+        listProductShoopingCart: [],
+        total: 0.0,
+        quantity: 0
+      )
+    );
+  }
+
+
+  void _onResetQuery( OnResetQuery event, Emitter emit){
     
     emit(
       state.copyWith(
@@ -135,7 +197,16 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
   }
 
-  void _onSelectNavigationBar ( OnSelectNavigationBar event, Emitter emit){
+  void _onResetQuery2( OnResetQuery2 event, Emitter emit){
+    
+    emit(
+      state.copyWith(
+        titleQuery2: '',
+      )
+    );
+  }
+
+  void _onSelectNavigationBar( OnSelectNavigationBar event, Emitter emit){
 
     emit(
       state.copyWith(

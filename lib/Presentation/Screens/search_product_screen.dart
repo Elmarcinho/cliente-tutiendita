@@ -77,7 +77,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                   crossAxisSpacing: 2,
                 ),
                 itemCount: state.listProductRepository.length,
-                itemBuilder: (contex, i) => _crearItem(context, state.listProductRepository[i], i)
+                itemBuilder: (contex, i) => _crearItem(context, state.listProductRepository[i])
               ),
             ),
           ],
@@ -86,7 +86,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
     );
   }
 
-  Widget _crearItem(BuildContext context, ProductModel product, int index) {
+  Widget _crearItem(BuildContext context, ProductModel product) {
     
     return Stack(
       children: [
@@ -151,7 +151,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
               ),
             ),
             onTap: () {
-              Navigator.pushNamed(context, 'product', arguments: index );
+              Navigator.pushNamed(context, 'product', arguments: product);
             },
           ),
         ),
@@ -230,7 +230,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                               product.visible = false;
                               product.clic = false;
                               context.read<ProductBloc>().add(OnVisibility(product));
-                              context.read<ProductBloc>().add(DeleteProductShoopingCartEvent(product, index));
+                              context.read<ProductBloc>().add(DeleteProductShoopingCartEvent(product));
                             }
                           }
                         ),
@@ -262,6 +262,5 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
         ),
       ],
     );
-    
   }
 }

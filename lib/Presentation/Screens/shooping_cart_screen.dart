@@ -142,7 +142,7 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                                           state.listProductShoopingCart[index].visible = false;
                                           state.listProductShoopingCart[index].clic = false;
                                           context.read<ProductBloc>().add(OnVisibility(state.listProductShoopingCart[index]));
-                                          context.read<ProductBloc>().add(DeleteProductShoopingCartEvent(state.listProductShoopingCart[index], index));
+                                          context.read<ProductBloc>().add(DeleteProductShoopingCartEvent(state.listProductShoopingCart[index]));
                                           Navigator.of(context).pop();
                                         }, 
                                       ),
@@ -217,16 +217,19 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                         ),
                       ]
                     )
-                    : Container(
-                      margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const Text('Total Parcial', style: TextStyle( fontSize: 16, fontWeight: FontWeight.w700)),
-                            Text(state.total.toStringAsFixed(2), style: const TextStyle( fontSize: 16, fontWeight: FontWeight.w700))
-                          ],
-                        ),
-                      );
+                    : ( state.listProductShoopingCart.isEmpty
+                        ? Container()
+                        : Container(
+                            margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const Text('Total Parcial', style: TextStyle( fontSize: 16, fontWeight: FontWeight.w700)),
+                                Text(state.total.toStringAsFixed(2), style: const TextStyle( fontSize: 16, fontWeight: FontWeight.w700))
+                              ],
+                            ),
+                          )
+                    );
                   
                 },
               ),
@@ -247,8 +250,11 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                     const Spacer(),
                     MaterialButton(
                       onPressed: (){
+
+                        if( state.listProductShoopingCart.isEmpty) return ;
+
                         String pedido = '';
-                        pedido = '🛒${pedido}Pedido: 1 \n';
+                        pedido = '🛒${pedido}Pedido \n';
                         pedido = '${pedido}Fecha: ${dateFormat.format(fecha)} \n';
                         pedido = '${pedido}Cliente: ${prefs.nombreUsuario} \n';
 
@@ -263,6 +269,9 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                         pedido = '$pedido\n*TOTAL: ${state.total.toStringAsFixed(2)}*';
 
                         WhatsAppService.launchWhatsAppString(pedido);
+
+                        context.read<ProductBloc>().add(OnResetShoopingCart());
+
                       },
                       shape: RoundedRectangleBorder(
                         side: const BorderSide( color: Colors.green), 
