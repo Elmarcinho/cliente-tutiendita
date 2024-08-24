@@ -1,22 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../Services/services.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
+  final prefUser = UserPreferencia();
+  
   LoginBloc() : super(const LoginState()) {
 
     on<CellphoneEvent>( _cellphoneEvent );
     on<OnSumitEvent>( _onSubmit );
     on<CountryCodeEvent>( _countryCodeEvent );
     on<SignInWithGoogleEvent>( _signInWithGoogleEvent );
-
+    on<ResetLoginEvent>( _resetLoginEvent);
 
   }
-
   void _countryCodeEvent( CountryCodeEvent event, Emitter emit){
 
     final countryCode = event.countryCode;
@@ -53,7 +55,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     ));
   }
 
-
   void _onSubmit( OnSumitEvent event, Emitter emit){
 
     emit(
@@ -61,6 +62,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         cellphone: state.cellphone,
         
     ));
+
+  }
+
+  void _resetLoginEvent( ResetLoginEvent event, Emitter emit){
+    
+    prefUser.token = '';
+    prefUser.nombreUsuario = '';
+    prefUser.email = '';
+    prefUser.cellphone = '';
+
+    emit(
+      state.copyWith(
+        token: '',
+        name: '',
+        cellphone: '',
+        email: '',
+        countryCode: ''
+      )
+    );
 
   }
 

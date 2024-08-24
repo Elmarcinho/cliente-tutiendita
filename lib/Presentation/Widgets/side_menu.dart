@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:cliente_tutiendita/Presentation/Bloc/login_bloc.dart';
+import '../../Provider/provider.dart';
 
 
 class SideMenu extends StatelessWidget {
@@ -7,9 +11,8 @@ class SideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final size = MediaQuery.of(context).size;
-    //final prefs = UserPreferencia();
-    //final authProvider = AuthProvider();
+    final authProvider = AuthProvider();
+    //final size = MediaQuery.of(context).size;
 
     return Drawer(
       child: Column(
@@ -38,13 +41,12 @@ class SideMenu extends StatelessWidget {
                   leading: const Icon(Icons.power_settings_new, color:Colors.brown),
                   title: const Text('Cerrar Session'),
                   onTap: (){
-                    // context.read<LoginBloc>().add(ResetLogin());
-                    // authProvider.logout();
-                    // prefs.token='';
-                    // Navigator.pushReplacementNamed(context, 'login');  
+                    authProvider.logout();
+                    context.read<LoginBloc>().add(ResetLoginEvent());
+                    Navigator.pushReplacementNamed(context, 'login');  
                   },
                 ),
-                SizedBox( height: size.height * 0.5),
+                //SizedBox( height: size.height * 0.5),
               ]
             ),
           )

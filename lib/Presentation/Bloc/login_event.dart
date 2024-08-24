@@ -27,5 +27,6 @@ class SignInWithGoogleEvent extends LoginEvent{
   
 }
 
+class ResetLoginEvent extends LoginEvent{}
 
 class OnSumitEvent extends LoginEvent{ }

@@ -4,18 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 
 
-
 class AuthProvider{
 
-  final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  
-  
 
   Future<UserCredential> signInWithGoogle() async{
  
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
 
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
@@ -56,9 +51,9 @@ class AuthProvider{
 
   }
 
-  Future<void> logout() async {
+  Future<void> logout() async{
 
-    await _auth.signOut();
+    await GoogleSignIn().signOut();
 
   }
 
