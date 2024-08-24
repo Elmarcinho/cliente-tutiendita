@@ -284,6 +284,7 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                         WhatsAppService.launchWhatsAppString(pedido);
 
                         context.read<ProductBloc>().add(OnResetShoopingCart());
+                        context.read<ProductBloc>().add(const OnSelectNavigationBar(1));
 
                       },
                       color: Colors.green,
