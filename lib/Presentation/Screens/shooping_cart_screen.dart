@@ -15,7 +15,7 @@ class ShoopingCartScreen extends StatefulWidget {
 }
 
 class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
-
+  
   final prefs = UserPreferencia();
   DateTime fecha = DateTime.now();
   DateFormat dateFormat = DateFormat('dd-MM-yyyy');
@@ -25,13 +25,15 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
     
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
-
+        final size = MediaQuery.of(context).size;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
+            state.listProductShoopingCart.isEmpty
+            ? Container()
+            : Container(
               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: const Text('Items añadidos')
+              child: const Text('Items añadidos:')
             ),
             Expanded(
               child: ListView.separated(
@@ -237,21 +239,32 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
         
             Container(
               height: 90,
-              color: Colors.black12,
+              color: Colors.black26,
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 height: 35,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text('Total', style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold)),
+                    state.listProductShoopingCart.isEmpty
+                    ?InkWell(
+                      onTap: () => context.read<ProductBloc>().add(const OnSelectNavigationBar(1)),
+                      child: const Text(
+                        'Seguir comprando',
+                        style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    )
+                    :const Text('Total', style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold)),
                     const SizedBox( width: 50),
-                    Text(state.total.toStringAsFixed(2), style: const TextStyle( fontSize: 20, fontWeight: FontWeight.bold)),
+                    state.listProductShoopingCart.isEmpty
+                    ? Container()
+                    : Text(state.total.toStringAsFixed(2), style: const TextStyle( fontSize: 20, fontWeight: FontWeight.bold)),
                     const Spacer(),
                     MaterialButton(
                       onPressed: (){
-
-                        if( state.listProductShoopingCart.isEmpty) return ;
+                        if( state.listProductShoopingCart.isEmpty){
+                         return NotificationService.showSnackbarError2( size.height ,'El carrito se encuentra vacío, para continuar agrega algunos productos');
+                        }
 
                         String pedido = '';
                         pedido = '🛒${pedido}Pedido \n';

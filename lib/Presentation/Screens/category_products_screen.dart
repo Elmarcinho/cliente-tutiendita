@@ -51,7 +51,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                     icon: const Icon(
                       Icons.shopping_cart_outlined,
                       size: 27.0,
-                      color: Colors.white70,
+                      color: Colors.white,
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();

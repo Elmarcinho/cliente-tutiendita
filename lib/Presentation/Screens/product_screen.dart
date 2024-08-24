@@ -38,7 +38,7 @@ class ProductScreen extends StatelessWidget {
                   icon: const Icon(
                     Icons.shopping_cart_outlined,
                     size: 27.0,
-                    color: Colors.white70,
+                    color: Colors.white,
                   ),
                   onPressed: () {
                     if(state.screenCategoryProduct){
@@ -148,9 +148,13 @@ class _ProductoInformation extends StatelessWidget {
                         ),
                         child: const Icon(Icons.remove, color: Colors.black54),
                         onPressed: () {
-                          if (product.quantity >1) {
+                          if (product.quantity >0) {
                             product.quantity--;
                             context.read<ProductBloc>().add(OnQuantityUpdate(product));
+                            if(product.quantity == 0){
+                              product.clic = false;
+                              context.read<ProductBloc>().add(DeleteProductShoopingCartEvent(product));
+                            }
                           }
                         },
                       ),

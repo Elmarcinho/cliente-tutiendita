@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 
-class NotificationService {
+class NotificationService{
 
   static GlobalKey<ScaffoldMessengerState> mesengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -11,6 +11,22 @@ class NotificationService {
     final snackbar = SnackBar(
       backgroundColor: Colors.red.withOpacity(0.9),
       content: Text( message, style: const TextStyle(color: Colors.white, fontSize: 20))
+    );
+
+    mesengerKey.currentState!.showSnackBar(snackbar);
+  }
+
+  static showSnackbarError2 (double size, String message){
+
+    final snackbar = SnackBar(
+      backgroundColor: Colors.red.withOpacity(0.9),
+      content: Text( message, style: const TextStyle(color: Colors.white, fontSize: 20)),
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(
+        bottom: size - 180,
+        left: 10,
+        right: 10
+      ),
     );
 
     mesengerKey.currentState!.showSnackBar(snackbar);
