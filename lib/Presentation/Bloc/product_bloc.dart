@@ -176,10 +176,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
   }
 
-  void _onResetShoopingCart( OnResetShoopingCart event, Emitter emit){
-    
+  void _onResetShoopingCart( OnResetShoopingCart event, Emitter emit) async{
+
+    final productos = await productProvider.getProductos();
+
     emit(
       state.copyWith(
+        listProduct: productos,
+        listProductRepository: productos,
         listProductShoopingCart: [],
         total: 0.0,
         quantity: 0

@@ -273,11 +273,12 @@ class _ShoopingCartScreenState extends State<ShoopingCartScreen> {
                         context.read<ProductBloc>().add(OnResetShoopingCart());
 
                       },
+                      color: Colors.green,
                       shape: RoundedRectangleBorder(
-                        side: const BorderSide( color: Colors.green), 
+                        side: const BorderSide( color: Colors.white), 
                         borderRadius: BorderRadius.circular(8)
                       ), 
-                      child: const Text('Enviar Compra'),
+                      child: const Text('Enviar Pedido', style: TextStyle(color: Colors.white),),
                     ),
                   ],
                 ),

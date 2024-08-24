@@ -29,8 +29,12 @@ class _CategoryProductsState extends State<CategoryProducts> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('${titleCategory[0].toUpperCase()}${titleCategory.substring(1)}'),
+            iconTheme: const IconThemeData(color: Colors.white),
+            title: Text('${titleCategory[0].toUpperCase()}${titleCategory.substring(1)}', 
+              style: const TextStyle( color: Colors.white)
+            ),
             centerTitle: true,
+            backgroundColor: Colors.brown,
             actions: [
               Container(
                 padding:
@@ -46,7 +50,8 @@ class _CategoryProductsState extends State<CategoryProducts> {
                   child: IconButton(
                     icon: const Icon(
                       Icons.shopping_cart_outlined,
-                        size: 27.0,
+                      size: 27.0,
+                      color: Colors.white70,
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();

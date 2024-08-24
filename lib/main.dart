@@ -46,7 +46,7 @@ class MainApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: AppTheme( selectedColor: 1).getTheme(),
+        theme: AppTheme( selectedColor: 0).getTheme(),
         title: 'Admin Tienda',
         initialRoute: prefs.token.isEmpty? 'login':( prefs.cellphone.isEmpty?'registerClient':'home'),
         scaffoldMessengerKey: NotificationService.mesengerKey,

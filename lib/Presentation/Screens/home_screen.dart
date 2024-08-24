@@ -21,17 +21,25 @@ class HomeScreen extends StatelessWidget {
         return Scaffold(
           drawer: const SideMenu(),
           appBar: AppBar(
-            title: Text(
-              state.selectIndex == 0
-              ? 'Busqueda'
-              : (state.selectIndex == 2? 'Mi carrito' : '')
-            ),
+            iconTheme: const IconThemeData(color: Colors.white),
+            backgroundColor: Colors.brown,
+            title: state.selectIndex == 1
+            ?Container(
+              width: 170,
+              height: 170,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
+              child: Image.asset('assets/tutiendita.png', scale: 4)
+            )
+            :(state.selectIndex == 0
+             ? const Text('Búsqueda', style: TextStyle( color: Colors.white))
+             : const Text('Mi carrito',  style: TextStyle( color: Colors.white))
+             ),
             centerTitle: true,
             actions: [
               IconButton(
                 icon: const Icon(
                   FontAwesomeIcons.whatsapp,
-                  color: Colors.green,
+                  color: Color.fromARGB(255, 61, 213, 66),
                   size: 40,
                 ),
                 onPressed: () {

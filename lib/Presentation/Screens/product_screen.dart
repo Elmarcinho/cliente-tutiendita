@@ -19,7 +19,9 @@ class ProductScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
         appBar: AppBar(
-          title: const Text('Producto'),
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: const Text('Producto', style:TextStyle( color: Colors.white)),
+          backgroundColor: Colors.brown,
           centerTitle: true,
           actions: [
             Container(
@@ -35,7 +37,8 @@ class ProductScreen extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(
                     Icons.shopping_cart_outlined,
-                      size: 27.0,
+                    size: 27.0,
+                    color: Colors.white70,
                   ),
                   onPressed: () {
                     if(state.screenCategoryProduct){

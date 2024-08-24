@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 
-class UserPreferencia {
+class UserPreferencia{
 
   static late SharedPreferences _prefs;
   
